@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "GetLedger";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+
+}
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script src="~/js/jquery-ui.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<!--==========================
+  Contact Section
+============================-->
+
+@using (Html.BeginForm("GenerateLedger", "Finance", FormMethod.Post))
+{
+    <section id="contact" class="section-bg wow fadeInUp">
+        <div class="container">
+
+            <div class="h3center">
+                <h3 style="text-align: center">Generate Ledger</h3>
+                <div class="separator-breadcrumb border-top"></div>
+                <br />
+                @if (TempData["response"] != null)
+                {
+                    <div class="alert alert-success" id="msgalert">
+                        @TempData["response"].ToString()
+                    </div>
+                }
+            </div>
+
+            <div class="row contact-info">
+
+                <div class="form col-md-12">
+                    <form method="post" role="form" class="contactForm">
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                            </div>
+                            <div class="form-group col-md-6">
+
+                                @Html.DropDownList("Select Account", new List<SelectListItem>{new SelectListItem{ Text="01-001-0001"},
+                                    new SelectListItem{ Text="01-001-1111"}, new SelectListItem{ Text="01-110-1001", Value="4"},
+                                   }, "--- Select Account---", new { @class = "form-control", id = "checkit" })
+
+
+
+                                @Html.Editor("Start", new { htmlAttributes = new { @class = "form-control form-control-rounded", id = "txtstart", @placeholder = "15/02/22" } })
+                                @Html.ValidationMessage("Start", "", new { @class = "text-danger db" })
+
+                                @Html.Editor("End", new { htmlAttributes = new { @class = "form-control form-control-rounded", id = "txtend", @placeholder = "29/06/22" } })
+                                @Html.ValidationMessage("End", "", new { @class = "text-danger db" })
+                            </div>
+                        </div>
+                        <div class="text-center mb-3 "><button class=" btn btn-danger" name="btnAddRole" type="submit">Generate Ledger</button></div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+}
+
+
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
+<script>
+    $("#txtstart").datepicker().datepicker('setDate', new Date());
+    $("#txtend").datepicker().datepicker('setDate', new Date());
+</script>
+
+

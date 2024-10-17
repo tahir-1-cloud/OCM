@@ -1,0 +1,126 @@
+﻿@model IEnumerable<OCMDomain.Repository.Edmx.StudentRegistrationTble>
+@{
+    ViewData["Title"] = "EnrolledStudents";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<!--Table Grid-->
+<link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--Bootstrapp Toggle-->
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<link href="~/css/toggle.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="~/public/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="~/js/toastr.js"></script>
+
+@if (TempData["response"] != null)
+{
+    <script>
+        $(document).ready(function() {
+            var success = '@((TempData["response"] != null).ToString())';
+            if (success == 'false' || success == false) {
+            } else {
+                toastr.success('@TempData["response"].ToString()')
+            }
+        });
+    </script>
+}
+
+
+<head>
+    <style>
+        .swal-modal {
+            background: lightblue;
+        }
+
+        .swal-button--yes {
+            background: darkslateblue;
+        }
+
+        .swal-button--no {
+            background: darkslateblue;
+        }
+    </style>
+</head>
+<div class="table-content" style="padding:20px">
+    <h3 style="margin-top:20px;"> Enrolled Students</h3>
+    <br />
+    <br />
+    <table id="User" class="display">
+        <thead>
+            <tr>
+                <th>SER NO</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Gender</th>
+                <th>Action</th>
+            </tr>
+            @{int i = 1;}
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Email</td>
+                    <td>@item.Mobile</td>
+                    <td>@item.Gender</td>
+                    <td style="text-align:center;">
+                        <a class="btn btn-link btn-danger remove btn-sm btnremove d-none" style="color:maroon" href='@Url.Action("DeleteStudent", "Student", new { id = item.StudentId,Cid=item.CheckUserTble.OnlineCourseId})' : null"><i class="fa fa-times"></i></a>
+                        <a class="btn btn-link btn-danger remove btndelete" style="color:maroon"><i class="fa fa-times"></i></a>
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#User').DataTable({
+                "Processing": true,
+                "ServerSide": false,
+                "Filter": true
+            })
+        });
+    </script>
+}
+<script>
+    $(".btndelete").click(function (e) {
+        e.preventDefault();
+        swal("Are you sure to delete?", {
+            buttons: {
+                yes: {
+                    text: "Yes",
+                    value: "yes"
+                },
+                no: {
+                    text: "No",
+                    value: "no"
+                }
+            }
+        }).then((value) => {
+            if (value == "yes") {
+                debugger;
+                $(this).parent().find(".btnremove").get(0).click();
+            }
+            return false;
+        });
+    });
+</script>

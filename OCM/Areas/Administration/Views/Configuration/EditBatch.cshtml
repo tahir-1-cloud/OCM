@@ -1,0 +1,115 @@
+﻿@model OCMDomain.Repository.Edmx.BatchTble
+@{
+    ViewData["Title"] = "AddBatch";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+<script>
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Batch Added Successfully');
+    }
+</script>
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Js Stylesheet -->
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .container {
+            margin-top: 40px;
+            background-color: white;
+            height: 100%;
+        }
+
+        .form-row {
+            margin-top: 20px;
+        }
+
+        .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #337AB7;
+            border-color: #337AB7;
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        button {
+            margin: 20px;
+        }
+
+        .card {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 style="margin-left: 30px; margin-top: 20px;"></h3>
+        @if (TempData["response"] != null)
+        {
+            <div class="alert alert-danger" id="msgalert">
+                @TempData["response"].ToString()
+            </div>
+        }
+        @using (Html.BeginForm("EditBatch", "Configuration", FormMethod.Post))
+        {
+            <div>@ViewData["error"]</div>
+            @Html.HiddenFor(x => x.BatchId)
+            @Html.AntiForgeryToken()
+            <div class="col-md-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Add Batch</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label style=" font-weight:normal">Batch Name</label>
+                                        @Html.TextBoxFor(x => x.BtachName, new { @class = "form-control", @placeholder = "Batch Name" })
+                                        @Html.ValidationMessageFor(x => x.BtachName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label style=" font-weight:normal">Start Date</label>
+                                        @Html.TextBoxFor(x => x.StartDate, new { @class = "form-control", @type = "Date" })
+                                        @Html.ValidationMessageFor(x => x.StartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label style=" font-weight:normal">End Date</label>
+                                        @Html.TextBoxFor(x => x.EndDate, new { @class = "form-control", @type = "Date" })
+                                        @Html.ValidationMessageFor(x => x.EndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-button" style=" padding-left:340px; float: left;">
+                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="reset" class="btn btn-primary">Reset</button>
+            </div>
+        }
+    </div>
+</body>
+</html>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

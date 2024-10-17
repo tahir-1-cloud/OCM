@@ -1,0 +1,84 @@
+﻿@model OCMDomain.Repository.Edmx.StudentRegistrationTble
+
+@{
+    ViewData["Title"] = "UploadChallan";
+    Layout = "~/Areas/Public/Views/Shared/_PublicLayout.cshtml";
+}
+
+<head>
+    @if (TempData["response"] != null)
+    {
+        <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+        } else {
+            toastr.info('@TempData["response"].ToString()')
+        }
+    });
+        </script>
+    }
+</head>
+<body>
+    <div class="container">
+        <div class="col-12 grid-margin">
+            @using (Html.BeginForm("UploadChallan", "Security", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Challan Form</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    @* @Html.HiddenFor(m => m.Email.ToList()) *@
+                                    @Html.HiddenFor(m => m.OnlineCourse.OnlineCourseId)
+                                 @*    @Html.HiddenFor(m => m.StudentId) *@
+                                    <div class="form-group col-md-4">
+                                        <label>Please Upload Your Challan Form:</label>
+                                        <input type="file" name="CoverPhoto" id="file" onchange="return fileValidation()" />
+                                    </div>
+                                </div>
+                                <div class="form-button float-right" style="padding-left: 25px">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="reset" class="btn btn-primary">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+</body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    function fileValidation() {
+        var fileInput =
+            document.getElementById('file');
+        var filePath = fileInput.value;
+        // Allowing file type
+        var allowedExtensions = /(.pdf)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Only pdf file Allowed');
+            fileInput.value = '';
+            return false;
+        }
+        else {
+            // Image preview
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById(
+                        'imagePreview').innerHTML =
+                        '<img src="' + e.target.result
+                        + '"/>';
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    }
+</script>
+

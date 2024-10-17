@@ -1,0 +1,81 @@
+﻿@model IEnumerable<OCMDomain.Repository.Edmx.OnlineCourseTble>
+@{
+    ViewBag.Title = "ListCourseCourse";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml"; }
+<script>
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+</script>
+<div class="content">
+    <div class="container-fluid">
+        <div class="section-header">
+            <h3 class="h3center">Online Course</h3>
+            @if (TempData["response"] != null)
+            {
+                <div class="alert alert-success" id="msgalert">
+                    @TempData["response"].ToString()
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card data-tables">
+                    <div class="card-body table-striped table-no-bordered table-hover dataTable dtr-inline table-full-width">
+                        <div class="toolbar">
+                        </div>
+                        <div class="fresh-datatables">
+                            <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>SER NO</th>
+                                        <th>Course NAME</th>
+                                        <th>Course Code</th>
+                                        <th>Description</th>
+                                        <th>Credit Hours</th>
+                                        <th>Total Fee</th>
+                                        <th>Type</th>
+                                        <th>Action</th>
+                                        @*<th>Logo</th>*@
+                                    </tr>
+                                </thead>
+                                @{int i = 1;}
+                                <tbody>
+                                    @foreach (var course in Model)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@course.Name</td>
+                                            <td>@course.Code</td>
+                                            <td>@course.Description</td>
+                                            <td>@course.CreditHours</td>
+                                            <td>@course.CourseFee.FeeAmount</td>
+                                            <td>@course.CourseType</td>
+                                            <td>
+                                                <a class="btn btn-link btn-warning edit" style="color:maroon" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateRole", "Home", new { id = course.OnlineCourseId })' : null"><i class="fa fa-edit"></i></a>
+                                                <a class="btn btn-link btn-danger remove" style="color:maroon" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteOCourse", "Courses", new { id = course.OnlineCourseId })': null"><i class="fa fa-times"></i></a>
+                                            </td>
+                                            @*<td>
+                                                    <img href="@course.LogoByPath" />
+                                                </td>*@
+                                            @*<td>@course.LogoByPath</td>*@
+                                        </tr>
+                                        i++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>

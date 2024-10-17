@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "BatchDetails";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Batch Detail</h3>
+<br />
+<br />
+<link href="~/css/toggle.css" rel="stylesheet" />
+<style>
+</style>
+<table id="User" class="display">
+
+    <thead>
+        <tr>
+            <th>SER NO</th>
+            <th>Batch Name</th>
+            <th>Action</th>
+        </tr>
+    
+        
+            <tr>
+                <td>1</td>
+                <td>June-22  - sep 2022 </td>
+                <td>
+                    <a href="#"> <i class="fa fa-trash"></i></a>
+                    <a href="#"> <i class="fas fa-edit"></i></a>
+                </td>
+                
+        </thead>
+</table>
+
+
+
+<link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!--Bootstrapp Toggle-->
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+@section scripts{
+
+    <script>$(document).ready(function () {
+          $('#User').DataTable({
+
+              "Processing": true,
+              "ServerSide": false,
+              "Filter": true
+          })
+
+          //Toggle Button
+
+
+      });</script>
+}
+

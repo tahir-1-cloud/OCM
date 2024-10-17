@@ -1,0 +1,241 @@
+﻿@model OCMDomain.Repository.Edmx.EmployContractTble
+@{
+    ViewData["Title"] = "EmployeeContract";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="~/public/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="~/js/toastr.js"></script>
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <!-- Js Stylesheet -->
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+    <title>User Registration</title>
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .container {
+            margin-top: 40px;
+            background-color: white;
+        }
+
+        .form-row {
+            margin-top: 20px;
+        }
+
+        .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #337AB7;
+            border-color: #337AB7;
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        button {
+            margin: 20px;
+        }
+
+        .card {
+            border: none;
+        }
+
+        h3 {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    @if (TempData["response"] != null)
+    {
+        <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+
+        } else {
+            toastr.info('@TempData["response"].ToString()')
+        }
+    });
+        </script>
+    }
+
+    <div class="container">
+        <h3>Contract</h3>
+        <h1> @ViewBag.PageName</h1>
+        @using (Html.BeginForm(Html.BeginForm("UpdateContractEmploye", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" })))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(x => x.ConId)
+            @Html.AntiForgeryToken()
+
+
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Contract Details</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    @*<div class="form-group col-md-4">
+                                            <label>Employe Name:</label>
+                                            @Html.DropDownListFor(model => model.EmployTble.EmpId, (IEnumerable<SelectListItem>)ViewBag.Employe, "--Choose Employe--", new { @class = "form-control dropdowncursor", id = "ddEmploye" })
+                                        </div>*@
+                                    <div class="form-group col-md-4">
+                                        <label>Full Name:</label>
+                                        @Html.TextBoxFor(x => x.FullName, new { @class = "form-control", @placeholder = "Name", id = "txtname" })
+                                        @Html.ValidationMessageFor(x => x.FullName, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Email:</label>
+                                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Email", id = "txtemail" })
+                                        @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>CNIC:</label>
+
+                                        @Html.TextBoxFor(x => x.Cnic, new { @class = "form-control", @placeholder = "Cnic", id = "txtcnic" })
+                                        @Html.ValidationMessageFor(x => x.Cnic, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-8">
+                                        <label>Address:</label>
+                                        @Html.TextAreaFor(x => x.Address, new { @class = "form-control", @placeholder = "Address", id = "txtaddress" })
+                                        @Html.ValidationMessageFor(x => x.Address, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Mobile:</label>
+                                        @Html.TextBoxFor(x => x.Mobile, new { @class = "form-control", @placeholder = "Mobile", id = "numMobile" })
+                                        @Html.ValidationMessageFor(x => x.Mobile, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+
+                                        <label>Contract Type:</label>
+                                        @Html.DropDownList("ContractType", new List<SelectListItem>
+                                    {new SelectListItem{ Text="permanent", Value="permanent"}
+                                    ,new SelectListItem{ Text="Temporary", Value="Temporary" },
+                                     }, "--- Select Type---", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Probation Start Date:</label>
+                                        @Html.TextBoxFor(x => x.ProbationStartDate, new { @class = "form-control", @placeholder = "", @Type = "text" })
+                                        @Html.ValidationMessageFor(x => x.ProbationStartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Probation End Date:</label>
+                                        @Html.TextBoxFor(x => x.ProbationEndDate, new { @class = "form-control", @placeholder = "", @Type = "text" })
+                                        @Html.ValidationMessageFor(x => x.ProbationEndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Probation Period:</label>
+                                        @Html.DropDownList("ProbationPeriod", new List<SelectListItem>
+                                       {new SelectListItem{ Text="3 Months", Value="3 Months"}
+                                       ,new SelectListItem{ Text="6 Months", Value="6 Months" }
+                                       ,new SelectListItem{ Text="1 Year", Value="1 Year" }
+                                        ,new SelectListItem{ Text="3 Years", Value="3 Years" }
+                                        }, "--- Select Period---", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Joining Date:</label>
+                                            <input type="date" name="JoiningDate" value="@Model.JoiningDate.Value.ToString("yyyy-MM-dd")" class="form-control"/>
+                                        @*@Html.TextBoxFor(x => x.JoiningDate, new { @class = "form-control", @placeholder = "", @Type = "text", id = "datepicker" })*@
+                                        @Html.ValidationMessageFor(x => x.JoiningDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Contract Expiry Date:</label>
+                                        <input type="date" name="ExpireDate" value="@Model.ContractExpireDate.Value.ToString("yyyy-MM-dd")" class="form-control" />
+                                        @*@Html.TextBoxFor(x => x.ContractExpireDate, new { @class = "form-control", @placeholder = "", @Type = "text" })*@
+                                        @Html.ValidationMessageFor(x => x.ContractExpireDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Salary Details</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Amount Type:</label>
+                                        @Html.DropDownList("SalaryType", new List<SelectListItem>
+                                        {new SelectListItem{ Text="Cash", Value="Cash"}
+                                        ,new SelectListItem{ Text="Online", Value="Online" },
+                                         }, "--- Select Type---", new { @class = "form-control" })
+
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Salary Amont:</label>
+                                        @Html.TextBoxFor(x => x.SalaryAmount, new { @class = "form-control", @placeholder = "Salary Amount" })
+                                        @Html.ValidationMessageFor(x => x.SalaryAmount, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-button" style="padding-left: 25px; float: right;">
+                <button type="submit" class="btn btn-success">Submit</button>
+
+            </div>
+        }
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+    </script>
+</body>
+</html>
+

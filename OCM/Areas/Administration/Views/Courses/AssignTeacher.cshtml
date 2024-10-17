@@ -1,0 +1,132 @@
+﻿
+@model OCMDomain.Repository.Edmx.AssignTeacherTble
+@{
+    ViewData["Title"] = "AssignTeacher";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Js Stylesheet -->
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+
+    <!--Toaster css Link-->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/js/toastr.js"></script>
+
+    <title>User Registration</title>
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .container {
+            margin-top: 40px;
+            background-color: white;
+        }
+
+        .form-row {
+            margin-top: 20px;
+        }
+
+        .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #337AB7;
+            border-color: #337AB7;
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        button {
+            margin: 20px;
+        }
+
+        .card {
+            border: none;
+        }
+
+        h3 {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+    @if (TempData["response"] != null)
+    {
+        <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+
+        } else {
+            toastr.success('@TempData["response"].ToString()')
+        }
+    });
+        </script>
+    }
+    <div class="container">
+        <h3>Assign Teaher</h3>
+        @using (Html.BeginForm("AssignTeacher", "Courses", FormMethod.Post))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Personal Details</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Teacher Name:</label>
+                                        @Html.TextBoxFor(x => x.TeacherName, new { @class = "form-control", @placeholder = "Teacher Name" })
+                                        @Html.ValidationMessageFor(x => x.TeacherName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Assign Date</label>
+                                        @Html.TextBoxFor(x => x.AssignDate, new { @class = "form-control", @type = "date" })
+                                        @Html.ValidationMessageFor(x => x.AssignDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Assigned By:</label>
+                                        @Html.TextBoxFor(x => x.AssignBy, new { @class = "form-control", @placeholder = "Assign By" })
+                                        @Html.ValidationMessageFor(x => x.AssignBy, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Refrence-->
+            <div class="form-button" style="padding-left: 25px; float: right;">
+                <button type="submit" class="btn btn-success">Assign</button>
+            </div>
+        }
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

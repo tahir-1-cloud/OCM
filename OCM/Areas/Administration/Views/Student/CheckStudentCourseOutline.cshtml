@@ -1,0 +1,118 @@
+﻿@model OCMDomain.Repository.Edmx.CourseOutlineTble
+
+@{
+    ViewData["Title"] = "Course Outline";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Jquery JS -->
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+
+    <title>User Registration</title>
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .container {
+            margin-top: 40px;
+            background-color: white;
+        }
+
+        .form-row {
+            margin-top: 20px;
+        }
+
+        .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #337AB7;
+            border-color: #337AB7;
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        button {
+            margin: 20px;
+        }
+
+        .card {
+            border: none;
+        }
+
+        .Fee {
+            margin-top: 25px;
+            padding: 25px;
+            display: none;
+            color: #fff;
+            border: 1px solid grey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" id="panelheading"><label style="margin-left:400px;height:30px">Course Outline</label></div>
+                        <div class="col-md-8">
+
+
+                            @if (Model != null)
+                            {
+                                <p> <b>Course Title:</b> <span>@Model.CourseTitle</span></p>
+
+
+                            }
+
+
+                            else
+                            {
+                                <p>Course Title: <span style="font-weight: bolder;"> Not Defined</span></p>
+                            }
+                            <br />
+                            @if (Model != null)
+                            {
+                                <div>
+                                    <p>
+                                        <b>Course Description:</b>
+                                        <span>@Model.CourseDescription </span>
+                                    </p>
+                                </div>
+
+
+
+                            }
+                            else
+                            {
+                                <div>
+                                    <p> Course Description: <span style="font-weight: bolder;"> Not Defined</span></p>
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

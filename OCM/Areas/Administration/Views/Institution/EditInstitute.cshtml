@@ -1,0 +1,248 @@
+﻿@model OCMDomain.Repository.Edmx.InstitutionTble
+
+
+@{
+    ViewData["Title"] = "OurInstitute";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="~/plugins/summernote/summernote-lite.css" rel="stylesheet" />
+
+    <!-- Jquery JS -->
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/tinymce.min.js"></script>
+    <title>User Registration</title>
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .container {
+            margin-top: 40px;
+            background-color: white;
+        }
+
+        .form-row {
+            margin-top: 20px;
+        }
+
+        .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #337AB7;
+            border-color: #337AB7;
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        button {
+            margin: 20px;
+        }
+
+        .card {
+            border: none;
+        }
+
+        .Fee {
+            margin-top: 25px;
+            padding: 25px;
+            display: none;
+            color: #fff;
+            border: 1px solid grey;
+        }
+    </style>
+    <link href="~/plugins/Summernote1/summernote-bs4.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h3 style="margin-left: 30px; margin-top: 10px;">Institute</h3>
+        @using (Html.BeginForm("EditInstitute", "Institution", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" });
+            @Html.HiddenFor(x => x.InstituteId);
+            @Html.AntiForgeryToken();
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Our Institute</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Name:</label>
+                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Name" })
+                                        @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Registration Number:</label>
+                                        @Html.TextBoxFor(x => x.RegistrationNo, new { @class = "form-control", @placeholder = "Registration Number" })
+                                        @Html.ValidationMessageFor(x => x.RegistrationNo, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Phone:</label>
+                                        @Html.TextBoxFor(x => x.Phone, new { @class = "form-control", @placeholder = "Registration Number" })
+                                        @Html.ValidationMessageFor(x => x.Phone, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label>Address:</label>
+                                        @Html.TextAreaFor(x => x.Address, new { @class = "form-control", @placeholder = "Address", @id = "richtxt" })
+                                        @Html.ValidationMessageFor(x => x.Address, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    @*<div class="form-group col-md-4">
+                                            <label>Email:</label>
+                                            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Email" })
+                                            @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })
+                                        </div>*@
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Owner Name:</label>
+                                        @Html.TextBoxFor(x => x.OwnerName, new { @class = "form-control", @placeholder = "Owner Name" })
+                                        @Html.ValidationMessageFor(x => x.OwnerName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Started Year:</label>
+                                        @Html.TextBoxFor(x => x.StartedYear, new { @class = "form-control", @placeholder = "", @type = "date" })
+
+                                    </div>
+
+
+                                    <div class="form-group col-md-4">
+                                        <label asp-for="CoverPhoto" class="control-label"></label>
+                                        <div class="custom-file">
+                                            <label for="CoverPhoto">Select a file:</label>
+                                            <input type="file" id="CoverPhoto" name="CoverPhoto">
+                                        </div>
+                                        <span asp-validation-for="CoverPhoto" class="text-danger"></span>
+
+                                    </div>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Number of Courses:</label>
+                                        @Html.TextBoxFor(x => x.NoofCourses, new { @class = "form-control", @placeholder = "Number of Courses" })
+                                        @Html.ValidationMessageFor(x => x.NoofCourses, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Number of Students:</label>
+                                        @Html.TextBoxFor(x => x.NoofStudents, new { @class = "form-control", @placeholder = "Number of Students" })
+                                        @Html.ValidationMessageFor(x => x.NoofStudents, "", new { @class = "text-danger" })
+                                    </div>
+                                    @*<div class="form-group col-md-4">
+                                        <div class="form-check" style="margin-top:35px;">
+
+                                            <input class="form-check-input" type="checkbox" value="checkbox" id="Installment">
+                                            <label class="form-check-label" for="A/OLevels"> A/O Levels </label>
+                                        </div>
+
+                                    </div>*@
+                                </div>
+                                @*<div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <div class="form-check" style="position:absolute;margin-left:10px;">
+                                            @Html.CheckBox("IsBoard", new { @class = "form-check-input", @id = "Board", @style = "width:15px" })
+                                            <label class="form-check-label" style="margin-left:10px"> Board </label>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <div id="AllBoards" style="display: none;">
+
+                                            @Html.DropDownList("Board", new List<SelectListItem>{new SelectListItem{ Text="PunjabBoard", Value="PunjabBoard"},
+                                             new SelectListItem{ Text="IslamabaBoard", Value="IslamabaBoard"}
+                                            ,new SelectListItem{ Text="SindhBoard", Value="SindhBoard" },
+                                            }, "--- Select Board---", new { @class = "form-control" })
+
+                                        </div>
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-button" style="padding-left: 25px; float:right;">
+                <button type="submit" class="btn btn-success">Update</button>
+    
+            </div>}
+
+
+    </div>
+
+
+
+
+    <!-- Optional JavaScript -->
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    @*<script src="~/plugins/Summernote1/summernote-bs4.js"></script>*@
+    <link href="~/plugins/Summernote1/summernote-bs4.css" rel="stylesheet" />
+
+    @*<script type="text/javascript">
+        $(document).ready(function () {
+
+            var check = $("#Board").prop("checked");
+            if (check) {
+                $("#AllBoards").show();
+            }
+            $("#Board").change(function () {
+                if (this.checked) {
+                    $("#AllBoards").show();
+                }
+                else {
+                    $("#AllBoards").hide();
+                }
+            })
+
+
+
+        });*@
+    </script>
+    <script>
+        //tinymce.EditorManager.execCommand('mceRemoveEditor', true, "editTextArea");
+        tinymce.init({
+            selector: 'textarea#richtxt',
+            toolbar: 'bold italic underline | undo redo | styleselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link',
+            menubar: 'edit format',
+            force_br_newlines: true,
+            force_p_newlines: false,
+            forced_root_block: '',
+            height: 400,
+            menu: {
+            },
+            plugins: 'paste tinycomments pagebreak',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+            table_default_attributes: {
+                border: '0'
+            }
+        });
+        $(".tox-tinymce").css("width", "100%");
+        $(".tox-tinymce").css("height", "370px");
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,141 @@
+﻿@model OCMDomain.Repository.Edmx.AssetTble
+@{
+    ViewData["Title"] = "EditLabAsset";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Edit Lab Assets</h2>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Js Stylesheet -->
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+
+    <title>Update Lab</title>
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .container {
+            margin-top: 40px;
+            background-color: white;
+            height: 100%;
+        }
+
+        .form-row {
+            margin-top: 20px;
+        }
+
+        .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #337AB7;
+            border-color: #337AB7;
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        button {
+            margin: 20px;
+        }
+
+        .card {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        @if (TempData["response"] != null)
+        {
+            <div class="alert alert-danger" id="msgalert">
+                @TempData["response"].ToString()
+            </div>
+        }
+        @using (Html.BeginForm("EditLabAsset", "Lab", FormMethod.Post))
+        {
+            @Html.HiddenFor(x => x.AssetId)
+            <div>@ViewData["error"]</div>
+            @Html.AntiForgeryToken()
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Add Lab Asset</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label style=" font-weight:normal">Asset Name</label>
+                                            @Html.TextBoxFor(x => x.AssetName, new { @class = "form-control", @placeholder = "Name" })
+                                            @Html.ValidationMessageFor(x => x.AssetName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label style=" font-weight:normal">Asset Quantity</label>
+                                            @Html.TextBoxFor(x => x.AssetQuantity, new { @class = "form-control", @placeholder = "Quantity" })
+                                            @Html.ValidationMessageFor(x => x.AssetQuantity, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group col-md-4">
+                                            <label style=" font-weight:normal">Damaged Asset</label>
+                                            @Html.TextBoxFor(x => x.DamagedAsset, new { @class = "form-control", @placeholder = "Damaged Asset" })
+                                            @Html.ValidationMessageFor(x => x.DamagedAsset, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        @*<div class="form-group col-md-4">
+                                            <label>Select Lab:</label>
+                                            @Html.DropDownListFor(x => x.labtab.LabId, (IEnumerable<SelectListItem>)ViewBag.Lab, "--Choose Lab Name--", new { @class = "form-control dropdowncursor", id = "txtzipcode" })
+                                        </div>*@
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-button" style="padding-left: 25px; float: right;">
+                <button type="submit" class="btn btn-success">Update</button>
+            </div>
+        }
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>
+
+
+<script>
+        function ConfirmDelete() {
+            return confirm('Are you sure you want to delete?');
+        }
+        function ConfirmUpdate() {
+            return confirm('Batch Added Successfully');
+        }
+</script>

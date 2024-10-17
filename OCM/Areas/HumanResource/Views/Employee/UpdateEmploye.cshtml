@@ -1,0 +1,291 @@
+﻿
+@model OCMDomain.Repository.Edmx.EmployTble
+@{
+    ViewData["Title"] = "AddEmployee";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Js Stylesheet -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/js/toastr.js"></script>
+    <title>User Registration</title>
+    @if (TempData["response"] != null)
+    {
+        <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+
+        } else {
+            toastr.success('@TempData["response"].ToString()')
+        }
+    });
+        </script>
+    }
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .container {
+            margin-top: 40px;
+            background-color: white;
+        }
+
+        .form-row {
+            margin-top: 20px;
+        }
+
+        .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #337AB7;
+            border-color: #337AB7;
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+
+        button {
+            margin: 20px;
+        }
+
+        .card {
+            border: none;
+        }
+
+        h3 {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Update Employee</h3>
+
+        @using (Html.BeginForm(Html.BeginForm("UpdateEmploye", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" })))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.EmpId)
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Personal Details</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Employee Type</label>
+                                        @Html.DropDownList("EmpType", new List<SelectListItem>{new SelectListItem{ Text="Teacher", Value="Teacher"},
+                                       new SelectListItem{ Text="HR", Value="HR"}
+                                      ,new SelectListItem{ Text="Accountant", Value="Accountant" }
+                                      ,new SelectListItem{ Text="LabAssistant", Value="LabAssistant" }
+                                      ,new SelectListItem{ Text="TechnicalDirector", Value="TechnicalDirector" },
+                                      }, "--- Employee Type---", new { @class = "form-control" })
+
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>First Name:</label>
+                                        @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", @placeholder = "First Name" })
+                                        @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>Middle Name</label>
+                                        @Html.TextBoxFor(x => x.MiddleName, new { @class = "form-control", @placeholder = "Middle Name" })
+                                        @Html.ValidationMessageFor(x => x.MiddleName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>Last Name:</label>
+                                        @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                                        @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-8">
+                                        <label>Address:</label>
+                                        @Html.TextAreaFor(x => x.EmpAddress, new { @class = "form-control", @placeholder = "Address" })
+                                        @Html.ValidationMessageFor(x => x.EmpAddress, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>CNIC:</label>
+                                        @Html.TextBoxFor(x => x.EmpCnic, new { @class = "form-control", @placeholder = "CNIC" })
+                                        @Html.ValidationMessageFor(x => x.EmpCnic, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Email:</label>
+                                        @Html.TextBoxFor(x => x.EmpEmail, new { @class = "form-control", @placeholder = "Email" })
+                                        @Html.ValidationMessageFor(x => x.EmpEmail, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Phone:</label>
+                                        @Html.TextBoxFor(x => x.EmpPhoneNum, new { @class = "form-control", @placeholder = "Phone" })
+                                        @Html.ValidationMessageFor(x => x.EmpPhoneNum, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Mobile:</label>
+                                        @Html.TextBoxFor(x => x.EmpMobileNum, new { @class = "form-control", @placeholder = "Mobile" })
+                                        @Html.ValidationMessageFor(x => x.EmpMobileNum, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Gender:</label>
+                                        @Html.DropDownList("Gender", new List<SelectListItem>{new SelectListItem{ Text="Female", Value="Female"},
+                                       new SelectListItem{ Text="Male", Value="Male"}                               
+                                        }, "--- Select Months---", new { @class = "form-control" })                                      
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Marital Status:</label>
+                                        @Html.DropDownList("EmpMaritalStatus", new List<SelectListItem>{new SelectListItem{ Text="Single", Value="Single"},
+                                        new SelectListItem{ Text="Married", Value="Married"}
+                                       ,new SelectListItem{ Text="widowed", Value="widowed" }
+                                        ,new SelectListItem{ Text="Divorced", Value="Divorced" },
+                                       }, "--- Select Status---", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Date of Birth:</label>
+                                        <input type="date" name="EmpDob" value="@Model.EmpDob.Value.ToString("yyyy-MM-dd")" class="form-control" />
+                                        @*@Html.TextBoxFor(x => x.EmpDob, new { @class = "form-control", @placeholder = "", @type = "text" })*@
+                                        @Html.ValidationMessageFor(x => x.EmpDob, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Driving Lisence Number:</label>
+                                        @Html.TextBoxFor(x => x.DrivingLicence, new { @class = "form-control", @placeholder = "Driving Lisence" })
+                                        @Html.ValidationMessageFor(x => x.DrivingLicence, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Qualification and Experience-->
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Qualification and Experience</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Qualification Level:</label>
+                                        @Html.DropDownList("EmpQualification", new List<SelectListItem>{new SelectListItem{ Text="Bachelors", Value="Bachelors"},
+                                      new SelectListItem{ Text="Intermediate", Value="Intermediate"}
+                                     ,new SelectListItem{ Text="Masters", Value="Masters" }
+                                      ,new SelectListItem{ Text="Doctorate", Value="Doctorate" },
+                                     }, "--- Select Status---", new { @class = "form-control" })
+
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Specialized Degree:</label>
+                                        @Html.TextBoxFor(x => x.EmpSpecializedDegree, new { @class = "form-control", @placeholder = "Degree Specialization" })
+                                        @Html.ValidationMessageFor(x => x.EmpSpecializedDegree, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Degree Year:</label>
+                                        <input type="date" name="EmpDegreeYear" value="@Model.EmpDegreeYear.Value.ToString("yyyy-MM-dd")" class="form-control" />
+                                        @*@Html.TextBoxFor(x => x.EmpDegreeYear, new { @class = "form-control", @placeholder = "", @type = "text" })*@
+                                        @Html.ValidationMessageFor(x => x.EmpDegreeYear, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Experience:</label>
+                                        @Html.DropDownList("EmpExperience", new List<SelectListItem>{new SelectListItem{ Text="0 to 1 year", Value="0 to 1 year"},
+                                   new SelectListItem{ Text="1 to 2 year", Value="1 to 2 year"}
+                                  ,new SelectListItem{ Text="2 to 3 years", Value="2 to 3 years" }
+                                  ,new SelectListItem{ Text="More than 3 years", Value="More than 3 years" },
+                                  }, "--- Select Status---", new { @class = "form-control" })
+
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                       
+                                        <label asp-for="CoverPhoto" class="control-label"></label>
+                                        <div class="custom-file">
+                                            <label for="CoverPhoto">Upload Experience Letter</label>
+                                            <input type="file" id="CoverPhoto" name="CoverPhoto">
+                                        </div>                                      
+                                    </div>                             
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label asp-for="CoverPhoto1" class="control-label"></label>
+                                        <div class="custom-file">
+                                            <label for="CoverPhoto1">Upload Degree</label>
+                                            <input type="file" id="CoverPhoto1" name="CoverPhoto1">
+                                        </div>
+                                    </div>                                 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Refrence-->
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading" id="panelheading">Refrence</div>
+                            <div class="panel-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Person Name:</label>
+                                        @Html.TextBoxFor(x => x.RefName, new { @class = "form-control", @placeholder = "Person Name" })
+                                        @Html.ValidationMessageFor(x => x.RefName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Mobile:</label>
+                                        @Html.TextBoxFor(x => x.RefMobileNum, new { @class = "form-control", @placeholder = "Mobile Number" })
+                                        @Html.ValidationMessageFor(x => x.RefMobileNum, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Email:</label>
+                                        @Html.TextBoxFor(x => x.RefEmail, new { @class = "form-control", @placeholder = "Email" })
+                                        @Html.ValidationMessageFor(x => x.RefEmail, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label>Address:</label>
+                                    @Html.TextAreaFor(x => x.RefAddress, new { @class = "form-control", @placeholder = "Address" })
+                                    @Html.ValidationMessageFor(x => x.RefAddress, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-button" style="padding-left: 25px; float: right;">
+                <button type="submit" class="btn btn-success">Update</button>            
+            </div>
+        }
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,818 @@
+﻿@model OCMDomain.Entities.ModelClass;
+@{
+    ViewData["Title"] = "LectureMaterial";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<!--Toaster css Link-->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="~/public/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<!-- Js Stylesheet -->
+<script src="~/public/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/js/tinymce.min.js"></script>
+<link href="~/css/toggle.css" rel="stylesheet" />
+<style type="text/css">
+
+
+    .modal-content iframe {
+        margin: 0 auto;
+        display: block;
+    }
+</style>
+<style>
+
+    .container {
+        padding: 20px;
+    }
+
+    #UploadDiv1, #UploadDiv2, #UploadDiv3 {
+        position: relative;
+        overflow: hidden;
+    }
+
+    #MyInput1, #MyInput2, #MyInput3 {
+        position: absolute;
+        font-size: 30px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+    }
+
+    p {
+    }
+
+    #CourseDesc {
+        font-size: 20px;
+    }
+
+    #label1, #label2, #label3 {
+        background-color: indigo;
+        color: white;
+        padding: 0.5rem;
+        font-family: sans-serif;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    #file-chosen {
+        margin-left: 0.3rem;
+        font-family: sans-serif;
+    }
+
+    .swal-modal {
+        background: lightblue;
+    }
+
+    .swal-button--yes {
+        background: darkslateblue;
+    }
+
+    .swal-button--no {
+        background: darkslateblue;
+    }
+</style>
+
+@if (TempData["response"] != null)
+{
+    <script>
+        $(document).ready(function() {
+            var success = '@((TempData["response"] != null).ToString())';
+            if (success == 'false' || success == false) {
+            } else {
+                toastr.success('@TempData["response"].ToString()')
+            }
+        });
+    </script>
+}
+
+<body>
+    <div class="container">
+        <h3> My Course Material</h3>
+        <br />
+
+        <br>
+        @using (Html.BeginForm("LectureMaterial", "Teachers", FormMethod.Post, new { enctype = "multipart/form-data", @id = "beginform" }))
+        {
+            <div class="row">
+
+                <div class="col-4" id="CourseDesc">
+                    @*<p> Course Name: <span style="font-weight: bolder;">@Model.OCT.Name</span></p>*@
+                    @*<p> Last Uploaded Date: <span style="font-weight: bolder;"> 05/09/2022 </span></p>*@
+                </div>
+                <div class="col-3">
+                    @*<p> Course Code: <span style="font-weight: bolder;"> @Model.OCT.Code </span></p>*@
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+
+                    <input hidden class="courseid" name="OnlineCourseId" value="@Model.OCT.OnlineCourseId" />
+                    @*@Html.HiddenFor(x => x.OCT.OnlineCourseId, new { @class = "courseid" , name="OnlineCourseId"})*@
+
+
+
+                    @*actual upload which is hidden*@
+
+                    @*our custom upload button*@
+                    <label class="btn btn-primary" @*for="video" id="label1"*@ style="background: #bf9213; border:0 " data-toggle="modal" data-target="#exampleModalCenter"> <i class="fas fa-file-video"></i> Upload Video</label>
+                    @*name of file chosen*@
+                    <span id="file-chosen1"></span>
+                    <label class="btn btn-primary" @*for="CoverPhoto"*@ style="margin-left: 50px; background: #349734; border:0" data-toggle="modal" data-target="#exampleModalCenter1" @*id="label2*@><i class="fas fa-image"></i> Upload Image</label>
+                    <!-- name of file chosen -->
+                    <span id="file-chosen2"></span>
+                </div>
+            </div>
+            <div class="row" style="margin-top:50px">
+                <div class="row ">
+                    @*<input type="file" id="CoverPhoto1" name="CoverPhoto1" hidden onchange="return PdfValidation()" />*@
+                    @*our custom upload button*@
+                    <div class="col-md-12">
+                        <label class="btn btn-primary" @*for="CoverPhoto1" id="label3"*@ style="background: #0095A5; border: 0; margin-left: 7px " data-toggle="modal" data-target="#exampleModalCenter2"> <i class="fas fa-file"></i> Upload File</label>
+                        <label class="btn btn-danger" data-toggle="modal" data-target="#transfermat" style=" margin-left:60px;width: 150px">  Transfer Material </label>
+
+
+
+
+
+
+
+
+                        <!--<label class="btn btn-primary"--> @*for="CoverPhoto1" id="label3"*@ <!--style="background: #a200a5; margin-left: 60px; border: 0 " data-toggle="modal" data-target="#exampleModalCenter2"> Transfer Material</label>-->
+                        @*name of file chosen*@
+                        <span id="file-chosen3"></span>
+                        @*@Html.ValidationMessageFor(x => x.CoverPhoto1, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                @*<div class="form-group col-md-8">
+                        <label asp-for="CoverPhoto1" class="control-label"></label>
+                        <div class="custom-file">
+                            <label for="CoverPhoto">Upload File</label>
+                            <input type="file" name="CoverPhoto1" id='file' onchange="return PdfValidation()" />
+                        </div>
+                    </div>*@
+                @*<div class="col-12">
+                        <button type="submit" class="btn btn-success" style="margin-top: 20px; width: 75px; float: right;" onclick="checking()">Save</button>
+                    </div>*@
+            </div>
+            <!-- The Modal -->
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @*<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>*@
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body ">
+                            <div class="row">
+
+                                <div class="col-md-12" style="display:flex;">
+
+                                    <label class="col-3">Video Title</label>
+                                    <input type="text" class="col-7" name="VideoTitle" />
+                                    @Html.ValidationMessageFor(x => x.CourseMT.VideoTitle, "", new { @class = "text-danger" })
+
+                                </div>
+                                <br />
+                                <br />
+                                <div class="col-md-12" style="display:flex; margin-top:10px">
+
+                                    <label class="col-3">Video Description</label>
+                                    <textarea class="col-7" name="VideoDescription"></textarea>
+                                    @*<input type="text"  />*@
+                                    @*@Html.TextBoxFor(x => x.courseMaterials.VideoDescription, new { @class = "col-7 ",@name= "VideoDescription" })*@
+                                    @Html.ValidationMessageFor(x => x.CourseMT.VideoDescription, "", new { @class = "text-danger" })
+
+                                </div>
+
+                                <!--<div class="col-md-12" style="display:flex;">-->
+                                @*<input type="hidden" id="txtcourseid" />*@
+                                <!--<label >Title</label>
+                                    <input class="col-7" type="text" form="">
+                                </div>-->
+                                @*<div class="col-md-12 mt-3" style="display:flex;">
+                                        <label class="col-3">Description </label>
+                                        <input class="col-7" type="text" value="@Model.courseMaterials.VideoDescription">
+                                    </div>*@
+                                <br />
+                                <div class="col-md-12" style="margin-top:12px;">
+                                    <input type="file" id="video" accept="video/*" name="Video" hidden onchange="return VideoValidation()" />
+                                    @*our custom upload button*@
+                                    <label id="label1" for="video" style="background: #808080; border: 0"> <i class="fas fa-file-video"></i> Upload Video</label>
+
+
+                                </div>
+                                <br />
+                                <div class="col-12">
+                                    <button id="S" type="submit" class="btn btn-success" style="margin-top: 20px; width: 75px; float: right;" onclick="checking()">Save</button>
+                                </div>
+                                @*<button type="submit" class="btn btn-success" style=" margin-top: 30px; width: fit-content; }" id="AssignBtn"> Assign </button>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- The Modal -->
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @*<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>*@
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body ">
+                            <div class="row">
+                                <div class="col-md-12" style="display:flex;">
+                                </div>
+                                <input type="file" id="CoverPhoto1" name="CoverPhoto1" hidden onchange="return PdfValidation()" />
+                                @*our custom upload button*@
+                                <label for="CoverPhoto1" id="label3" style="background: #808080"> <i class="fas fa-file"></i> Choose A File</label>
+                                @*name of file chosen*@
+                                <span id="file-chosen3"></span>
+                                <div class="col-12">
+                                    <button id="S" type="submit" class="btn btn-success" style="margin-top: 20px; width: 75px; float: right;" onclick="checking()">Save</button>
+                                </div>
+                                @*<button type="submit" class="btn btn-success" style=" margin-top: 30px; width: fit-content; }" id="AssignBtn"> Assign </button>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            //Model
+
+
+            <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @*<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>*@
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body ">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-md-12" style="display:flex;">
+                                    </div>
+                                    <input type="file" accept="image/*" name="CoverPhoto" id="CoverPhoto" hidden onchange="return fileValidation()" />
+                                    @*our custom upload button*@
+                                    <label for="CoverPhoto" style="margin-left: 50px; background: #808080;" id="label2"><i class="fas fa-image"></i> Choose Image</label>
+                                    <!-- name of file chosen -->
+                                    <span id="file-chosen2"></span>
+                                    <br />
+                                </div>
+                                <div class="col-12">
+                                    <button id="S1" type="submit" class="btn btn-success" style="margin-top: 20px; width: 75px; float: right;" onclick="checking()">Save</button>
+                                </div>
+                                @*<button type="submit" class="btn btn-success" style=" margin-top: 30px; width: fit-content; }" id="AssignBtn"> Assign </button>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="modal fade" id="transfermat" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @*<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>*@
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-12" style="display:flex;">
+                                </div>
+                                <div class="form-group col-md-10">
+                                    <label>Select Badge:</label>
+                                    @Html.DropDownListFor(model => model.CourseQt.CourseId, (IEnumerable<SelectListItem>)ViewBag.Batch, "--Choose Batch--", new { @class = "form-control dropdowncursor", id = "selectid" })
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="tranferid"> Transfer Material </button>
+                            </div>
+                            @*<button type="submit" class="btn btn-success" style=" margin-top: 30px; width: fit-content; }" id="AssignBtn"> Assign </button>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <table id="User" class="display">
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>File Name</th>
+                <th>File Type</th>
+                <th>Uploaded Date</th>
+                <th>View</th>
+                <th>Delete</th>
+                <th>Published</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            @{int i = 1;}
+
+            @foreach (var courses in Model.ListcourseMaterials)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@courses.Filename</td>
+                    <td>@courses.FileType</td>
+                    <td>@courses.UploadDate</td>
+                    <td>
+                        @if (@courses.VideoPath != null)
+                        {
+                            @*<a href="@courses.VideoPath" onlick="video(@courses.VideoPath)" class="fa fa-eye"> Video </a>*@
+                            var VideoHref = "#Video" + @i;
+                            var VideoModal = "Video" + @i;
+
+                            <a data-toggle="modal" href="@VideoHref" class="fa fa-eye"> Video </a>
+                            <!-- Modal Popup Start-->
+                            <div class="modal fade" id="@VideoModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 900px !important; ">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <button type="button" class="btn btn-outline-danger img-circle ml-auto" data-dismiss="modal">X</button>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card card-body">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-12">
+                                                        <video style="width:100%; height: 350px;" id="video-id" controls controlsList="nodownload">
+                                                            <source src="@courses.VideoPath" type="video/mp4">
+                                                        </video>
+                                                        <h3 class="col-3">@courses.VideoTitle</h3>
+                                                        <hr />
+                                                        <label class="col-7" style="font-weight:400">@courses.VideoDescription</label>
+                                                    </div>
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Popup End-->
+                        }
+                        @if (@courses.ImagePath != null)
+                        {
+                            var ImageHref = "#Image" + @i;
+                            var ImageModal = "Image" + @i;
+
+                            <a data-toggle="modal" href="@ImageHref" class="fa fa-eye"> Image </a>
+                            <!-- Modal Popup Start-->
+                            <div class="modal fade" id="@ImageModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 900px !important; ">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <button type="button" class="btn btn-outline-danger img-circle ml-auto" data-dismiss="modal">X</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card card-body">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-12">
+                                                        <img id="cartoonimage" src="@courses.ImagePath" class="w-100 h-100" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Popup End-->
+                        }
+                        @if (@courses.FilePath != null)
+                        {
+                            var FileHref = "#file" + @i;
+                            var FleModal = "file" + @i;
+                            <a data-toggle="modal" href="@FileHref" class="fa fa-eye"> File </a>
+                            <!-- Modal Popup Start-->
+                            <div class="modal fade" id="@FleModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 900px !important; ">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <button type="button" class="btn btn-outline-danger img-circle ml-auto modelclose" data-dismiss="modal">X</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card card-body">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-12">
+                                                        <iframe id="cartoonpdf" src="@courses.FilePath" #toolbar="0" style="object-fit:cover;width:100%; height: 350px;"></iframe>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Popup End-->
+                        }
+
+                    </td>
+                    <td>
+                        <a class="btn btn-link btn-danger remove btn-sm  btnremove d-none" style="color:maroon" href='@Url.Action("DeleteConfirmed", "Teachers", new { id = courses.CourseId, onlinecourseid=courses.OnlineCourseId})' : null"><i class="fa fa-times"></i></a>
+                        <a class="btn btn-link btn-danger remove btndelete" style="color:maroon"><i class="fa fa-times"></i></a>
+                    </td>
+                    <td>
+                        @if (courses.FileApprove == true)
+                        {
+                            <input type="checkbox" class="toggle" id="block-user" checked onclick="ToggleUserBlock(this, '@courses.CourseId')">
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="toggle" id="block-user" onclick="ToggleUserBlock(this, '@courses.CourseId')">
+                        }
+                    </td>
+
+                    @*<td><input class="toggle" type="checkbox"></td>*@
+                </tr>
+                i++;
+
+            }
+
+        </tbody>
+
+    </table>
+    @*Model pop*@
+
+    <div class="bs-example">
+        <!-- Modal Video -->
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        @*<h4 class="modal-title">YouTube Video</h4>*@
+                    </div>
+
+                    <div class="modal-body"> <iframe id="cartoonVideo" style="object-fit:cover;width:100%; height: 350px;" autoStart="0" frameborder="0" sandbox="" allowfullscreen=""></iframe> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bs-example">
+
+        <!-- Modal Image -->
+        <div id="imageModal" class="modal fade">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        @*<h4 class="modal-title">YouTube Video</h4>*@
+                    </div>
+                    <div class="modal-body"><img id="cartoonimage" /> @*<iframe class="cartoonVideo" style="object-fit:cover;width:100%; height: 100%" src="@courses.ImagePath" frameborder="0" allowfullscreen></iframe>*@ </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bs-example">
+
+        <!-- Modal pdf -->
+        <div id="pdfModal" class="modal fade">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        @*<h4 class="modal-title">YouTube Video</h4>*@
+                    </div>
+                    <div class="modal-body"> <iframe id="Pdf" style="object-fit:cover;width:100%; height: 100%" frameborder="0" allowfullscreen></iframe> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--Bootstrapp Toggle-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    @section scripts{
+
+        <script>
+            $(document).ready(function () {
+                $('.modelclose').click(function () {
+                    var media = $("#video-id").get(0);
+                    media.pause();
+                    media.currentTime = 0;
+                });
+                $('#cartoonimage').on('contextmenu', function (e) {
+                    e.preventDefault();
+                });
+                $('#cartoonpdf').on('contextmenu', function (e) {
+                    e.preventDefault();
+                });
+                /*  $('video').attr('controlsList', 'nodownload');*/
+
+                $('#User').DataTable({
+                    "Processing": true,
+                    "ServerSide": false,
+                    "Filter": true
+                });
+
+
+                //Toggle Button
+            });
+               $("#tranferid").click(function () {
+                debugger
+                var select = $("#selectid").val();
+                var course = $(".courseid").val();
+             $.ajax({
+                        url: '@Url.Action("TransferMaterial", "Teachers")',
+                        type: "POST",
+                        data: {
+                            batchid: select,
+                            Courseid: course
+
+
+                        },
+                        success: function (response) {
+                            toastr.success("Course Transfer Successfully");
+                        },
+                        error: function (response) {
+                            console.log(response);
+
+                        }
+                    });
+
+
+        });
+
+            const actualBtn1 = document.getElementById('actual-btn1');
+            const actualBtn2 = document.getElementById('actual-btn2');
+            const actualBtn3 = document.getElementById('actual-btn3');
+            const fileChosen1 = document.getElementById('file-chosen1');
+            const fileChosen2 = document.getElementById('file-chosen2');
+            const fileChosen3 = document.getElementById('file-chosen3');
+            actualBtn1.addEventListener('change', function () {
+                fileChosen1.textContent = this.files[0].name
+            });
+            actualBtn2.addEventListener('change', function () {
+                fileChosen2.textContent = this.files[0].name
+            });
+            actualBtn3.addEventListener('change', function () {
+                fileChosen3.textContent = this.files[0].name
+            })
+        </script>
+
+        <script>
+
+        </script>
+
+        <script>
+            function VideoValidation() {
+
+                var fileInput = document.getElementById("upload").accept = "video/*";
+                var filePath = fileInput.value;
+                // Allowing file type
+                var allowedExtensions = /(\.mp4)$/i;
+                if (!allowedExtensions.exec(filePath)) {
+                    alert('Only mp4 video Allowed');
+                    fileInput.value = '';
+                    return false;
+                }
+                else {
+                    // Image preview
+                    if (fileInput.files && fileInput.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById(
+                                'imagePreview').innerHTML =
+                                '<img src="' + e.target.result
+                                + '"/>';
+                        };
+                        reader.readAsDataURL(fileInput.files[0]);
+                    }
+                }
+            }
+            function fileValidation() {
+                var fileInput =
+                    document.getElementById('image').accept = "image/*";
+                var filePath = fileInput.value;
+                // Allowing file type
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                if (!allowedExtensions.exec(filePath)) {
+                    alert('Only jPG and Png file Allowed');
+                    fileInput.value = '';
+                    return false;
+                }
+                else {
+                    // Image preview
+                    if (fileInput.files && fileInput.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById(
+                                'imagePreview').innerHTML =
+                                '<img src="' + e.target.result
+                                + '"/>';
+                        };
+                        reader.readAsDataURL(fileInput.files[0]);
+                    }
+                }
+            }
+            function PdfValidation() {
+
+                var fileInput = document.getElementById('file');
+                var filePath = fileInput.value;
+                // Allowing file type
+                var allowedExtensions = /(\.pdf)$/i;
+                if (!allowedExtensions.exec(filePath)) {
+                    alert('Only Pdf file Allowed');
+                    fileInput.value = '';
+                    return false;
+                }
+                else {
+                    // Image preview
+                    if (fileInput.files && fileInput.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById(
+                                'imagePreview').innerHTML =
+                                '<img src="' + e.target.result
+                                + '"/>';
+                        };
+                        reader.readAsDataURL(fileInput.files[0]);
+                    }
+                }
+            }
+        </script>
+        <script>
+            function checking() {
+
+                var video = $("#video").val();
+                var image = $("#CoverPhoto").val();
+                var file = $("#CoverPhoto1").val();
+                if (image == "" && video != "" && file != "") {
+                    $("#beginform").submit(function (e) {
+                        e.preventDefault();
+                    });
+                    alert("please provide one thing at a time");
+                    window.location.reload();
+                }
+                else if (image != "" && video == "" && file != "") {
+                    $("#beginform").submit(function (e) {
+                        e.preventDefault();
+                    });
+                    alert("please provide one thing at a time");
+                    window.location.reload();
+                }
+                else if (image != "" && video != "" && file == "") {
+                    $("#beginform").submit(function (e) {
+                        e.preventDefault();
+                    });
+                    alert("please provide one thing at a time");
+                    window.location.reload();
+                }
+                else if (image != "" && video != "" && file != "") {
+                    $("#beginform").submit(function (e) {
+                        e.preventDefault();
+                    });
+                    alert("please provide one thing at a time");
+                    window.location.reload();
+                }
+            }
+
+
+
+            // /* Get iframe src attribute value i.e. YouTube video url
+            //and store it in a variable */
+            // var url = $(".cartoonVideo").attr('src');
+            // /* Assign empty url value to the iframe src attribute when
+            // modal hide, which stop the video playing */
+            // $("#myModal").on('hide.bs.modal', function () {
+            //     $(".cartoonVideo").attr('src', '');
+            // });
+            // /* Assign the initially stored url back to the iframe src
+            // attribute when modal is displayed again */
+            // $("#myModal").on('show.bs.modal', function () {
+            //     $(".cartoonVideo").attr('src', url);
+            // });
+
+
+        </script>
+        <script>
+            function video(path) {
+                $("#myModal").modal('show');
+                $("#cartoonVideo").attr('src', path);
+            }
+            function image(path) {
+                $("#imageModal").modal('show');
+                $("#cartoonimage").attr('src', path);
+            }
+            function pdf(path) {
+                $("#pdfModal").modal('show');
+                $("#Pdf").attr('src', path);
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                // Hide displayed paragraphs
+                $("#label1").click(function () {
+                    $("exampleModalCenter").show();
+                });
+
+                // Show hidden paragraphs
+                $("#S").click(function () {
+                    $("#exampleModalCenter").Hide();
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                // Hide displayed paragraphs
+                $("#label").click(function () {
+                    $("exampleModalCenter1").show();
+                });
+                // Show hidden paragraphs
+                $("#S1").click(function () {
+                    $("#exampleModalCenter1").Hide();
+                });
+            });
+        </script>
+        <script>
+        function ToggleUserBlock(event, courseId) {
+            Status = $(event).prop('checked') ? false : true;
+                    $.ajax({
+                        url: '@Url.Action("PublishMaterial", "Teachers")',
+                        type: "POST",
+                        data: {
+                            id: courseId,
+                            status: Status
+                        },
+                        success: function (response) {
+                            toastr.success("Course Published Successfully");
+                        },
+                        error: function (response) {
+                            console.log(response);
+
+                        }
+                    });
+                }
+        </script>
+
+    }
+</body>
+<script>
+    $(".btndelete").click(function (e) {
+        e.preventDefault();
+        swal("Are you sure to delete?", {
+            buttons: {
+                yes: {
+                    text: "Yes",
+                    value: "yes"
+                },
+                no: {
+                    text: "No",
+                    value: "no"
+                }
+            }
+        }).then((value) => {
+            if (value == "yes") {
+                debugger;
+                $(this).parent().find(".btnremove").get(0).click();
+            }
+            return false;
+        });
+    });
+</script>
+
+

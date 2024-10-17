@@ -1,0 +1,97 @@
+﻿@model IEnumerable<OCMDomain.Repository.Edmx.OnlineCourseTble>
+@{
+    ViewBag.Title = "ListPCourse";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml"; }
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/1.3.1/css/toastr.css" />
+<!-- Js Stylesheet -->
+<script src="~/public/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/js/tinymce.min.js"></script>
+<script>
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+</script>
+<div class="content">
+    <div class="container-fluid">
+        <div class="section-header">
+            <h3 class="h3center">List OF All Courses</h3>
+            @if (TempData["response"] != null)
+            {
+                <script>
+                    $(document).ready(function () {
+                        var success = '@((TempData["response"] != null).ToString())';
+                        if (success == 'false' || success == false) {
+
+                        }
+                        else {
+                            toastr.info('@TempData["response"].ToString()')
+                        }
+                    });
+                </script>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card data-tables">
+                    <div class="card-body table-striped table-no-bordered table-hover dataTable dtr-inline table-full-width">
+                        <div class="toolbar">
+                        </div>
+                        <div class="fresh-datatables">
+                            <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>SER NO</th>
+                                        <th>Batch Name</th>
+                                        <th>Course NAME</th>
+                                        <th>Course Code</th>
+                                        <th>Description</th>
+                                        @*<th>Total Fee</th>*@
+                                        <th>Course Type</th>
+                                        <th>Credit Hours</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                @{int i = 1;}
+                                <tbody>
+                                    @foreach (var course in Model)
+                                    {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@course.CourseQuota.BatchName</td>
+                                        <td>@course.Name</td>
+                                        <td>@course.Code</td>
+                                        <td>@course.Description</td>
+                                        @*<td>@course.CourseFee.FeeAmount</td>*@
+                                        <td>@course.CourseType</td>
+                                        <td>@course.CreditHours</td>
+                                        <td>
+                                            @*<a class="btn btn-link btn-warning edit" style="color:maroon" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateRole", "Home", new { id = course.OnlineCourseId })' : null"><i class="fa fa-edit"></i></a>*@
+                                            <a class="btn btn-link btn-danger remove" style="color:maroon" onclick="ConfirmDelete()? location.href='@Url.Action("DeletePCourse", "Courses", new { Id = course.OnlineCourseId })': null"><i class="fa fa-times"></i></a>
+                                        </td>
+                                        @*<td>
+                                        <img href="@course.CoursePhoto" />
+                                         </td>*@
+                                    </tr>
+                                        i++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+
+</script>

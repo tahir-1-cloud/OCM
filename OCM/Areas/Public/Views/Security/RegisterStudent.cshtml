@@ -1,0 +1,195 @@
+﻿@model OCMDomain.Repository.Edmx.StudentRegistrationValidation
+@{
+    ViewData["Title"] = "RegisterStudent";
+    Layout = "~/Areas/Public/Views/Shared/_PublicLayout.cshtml";
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="jquery-3.5.1.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    @*<link href="js/site.js" rel="stylesheet">*@
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Student Registration</title>
+    <style>
+        .form-row {
+            margin-top: 20px;
+        }
+        .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #337AB7;
+            border-color: #337AB7;
+        }
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+        #content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" style="margin-top: 25px;">
+        <div class="row" style="padding-left:25px;">
+            @Html.HiddenFor(x => x.OnlineCourse.OnlineCourseId)
+            @Html.HiddenFor(x => x.Email)
+            <!--<div class="col-md-8">-->
+                @*<h2> Physics </h2>*@
+                <!--<p> Course Name: <span style="font-weight: bolder;"> </span></p>
+                <p> Course Code: <span style="font-weight: bolder;"> 0112 </span></p>-->
+                @*<p> Course Assigned to: <span style="font-weight: bolder;"> Sir Usman </span></p>*@
+                <!--<p>A course in elementary physics, covers the basic concepts, principles and history of physics. Course topics will include selected topics in mechanics, heat, light, sound, electricity and magnetism, and modern physics. A course in elementary physics, covers the basic concepts, principles and history of physics. Course topics will include selected topics in mechanics, heat, light, sound, electricity and magnetism, and modern physics</p>
+            </div>-->
+        </div>
+        @*<form id="studentform" >*@
+        @using (Html.BeginForm("RegisterStudent", "Security", FormMethod.Post, new { @id = "studentform" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-12 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="panel panel-primary ">
+                                <div class="panel-heading" id="panelheading">Enroll Your Self</div>
+                                <div class="panel-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label style="font-weight:bolder;">First Name:</label>
+                                            @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", @placeholder = "First Name*" })
+                                            @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="FirstName" placeholder="First Name*">*@
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label style="font-weight:bolder;">Last Name:</label>
+                                            @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", @placeholder = "Last Name*" })
+                                            @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="LastName" placeholder="Last Name*">*@
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label style="font-weight:bolder;">Email:</label>
+                                            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Email*" })
+                                            @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })
+                                            @*<input type="email" class="form-control" id="Email" placeholder="Email*" name="toEmail">*@
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label style="font-weight:bolder;">Mobile:</label>
+                                            @Html.TextBoxFor(x => x.Mobile, new { @class = "form-control", @placeholder = "Mobile*" })
+                                            @Html.ValidationMessageFor(x => x.Mobile, "", new { @class = "text-danger" })
+                                            @*<input type="text" class="form-control" id="Mobile" placeholder="Mobile*">*@
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            <label style="font-weight:bolder;">Address:</label>
+                                            @Html.TextAreaFor(x => x.Address, new { @class = "form-control", @placeholder = "Address*" })
+                                            @Html.ValidationMessageFor(x => x.Address, "", new { @class = "text-danger" })
+                                            @*<textarea class="form-control" rows="3" id="Address" placeholder="Address*"></textarea>*@
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+                                            <label style="font-weight:bolder;">Date of Birth:</label>
+                                            @Html.TextBoxFor(x => x.Dob, new { @class = "form-control", @type = "date" })
+                                            @Html.ValidationMessageFor(x => x.Dob, "", new { @class = "text-danger" })
+                                            @*<input type="date" class="form-control" id="Date" placeholder="">*@
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label style="font-weight:bolder;">Cnic/Bay-Form:</label>
+                                            @Html.TextBoxFor(x => x.StdCnic, new { @class = "form-control", @type = "Cnic" })
+                                            @Html.ValidationMessageFor(x => x.StdCnic, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label style="font-weight:bolder;">Gender:</label>
+                                            @Html.DropDownList("Gender", new List<SelectListItem>{new SelectListItem{ Text="Male", Value="Male"},
+                                             new SelectListItem{ Text="Female", Value="Female"}
+                                              ,new SelectListItem{ Text="Other", Value="Other" },
+                                               }, new { @class = "form-control", @style = "height:auto" })
+                                            @Html.ValidationMessageFor(x => x.Gender, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"></div>
+                            <div class="col-3"></div>
+                            <div class="col-3"></div>
+                            <div class="col-3" style=" margin-bottom:20px; left:7%">
+                                <button class="btn btn-success" id="cmd">Enroll</button>
+                                <button type="reset" class="btn btn-primary">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <!--PDF Content-->
+        <div id="content">
+            <h3>Hello, this is file to download</h3>
+        </div>
+        <div id="editor"></div>
+    </div>
+    <!-- Optional JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    <script>
+        var doc = new jsPDF();
+        var specialElementHandlers = {
+            '#editor': function (element, renderer) {
+                return true;
+            }
+        };
+        $('#studentform').submit(function () {
+            doc.fromHTML($('#content').html(), 15, 15, {
+                'width': 170,
+                'elementHandlers': specialElementHandlers
+            });
+            var firstname = $("#FirstName").val();
+            if (firstname != null && firstname != "undefined" && firstname != '') {
+                doc.save('sample-file.pdf');
+            }
+        });
+         
+    </script>
+
+
+
+
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!--sweet Alert-->
+    <link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
+    @if (@TempData["reponse"] != null)
+    {
+        <script type="text/javascript">
+         window.onload = function () {
+         swal("Good job!", '@TempData["reponse"]', "success");
+         };
+        </script>
+    }
+    <script>
+    @*var msg = '@TempData["Msg"]';
+    if (msg.length) {
+        swal("Done",msg);
+        });
+    }*@
+    $(document).ready(function () {
+    });
+    </script>
+</body>
+</html>

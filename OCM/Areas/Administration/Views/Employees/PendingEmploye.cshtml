@@ -1,0 +1,165 @@
+﻿@model OCMDomain.Repository.Edmx.EmployeValidation
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="~/public/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+@if (TempData["response"] != null)
+{
+    <script>
+        $(document).ready(function() {
+            var success = '@((TempData["response"] != null).ToString())';
+            if (success == 'false' || success == false) {
+            } else {
+                toastr.success('@TempData["response"].ToString()')
+            }
+        });
+    </script>
+}
+
+<script>
+    function ConfirmApprove() {
+        return confirm('Are you sure you want to approve?');
+    }
+</script>
+
+<head>
+    <style>
+        .swal-modal {
+            background: lightblue;
+        }
+
+        .swal-button--yes {
+            background: darkslateblue;
+        }
+
+        .swal-button--no {
+            background: darkslateblue;
+        }
+    </style>
+</head>
+
+
+<h4>Pending Employees</h4>
+<br />
+<br />
+<div style="overflow-x:auto;">
+    <table id="User" class="table table-striped table-no-bordered table-hover table-responsive" cellspacing="0" width="100%" style="width:100%">
+        <thead>
+            <tr>
+                <th>SER NO</th>
+                <th>Employee Type</th>
+                <th>First Name</th>
+                @*<th>Middle Name</th>*@
+                <th>Last Name</th>
+                @*<th>Address</th>*@
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Cnic</th>
+                <th>Qualification</th>
+                @*<th>Gender</th>*@
+                @*<th>Marital Status</th>*@
+                @*<th>DOB</th>*@
+                @*<th>Driving Lisence</th>*@
+                @*<th>Specialized Degree</th>*@
+                @*<th>Degree Year</th>*@
+                @*<th>Experience</th>*@
+                @*<th>Ref Name</th
+                    <th>Mobile</th>
+                    <th>Address</th>*@
+                <th>Details</th>
+                <th>Download</th>
+                <th>Approve & Rejected</th>
+            </tr>
+            @{int i = 1;}
+        </thead>
+        <tbody>
+            @foreach (var item in Model.EmployList)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@item.EmpType</td>
+                    <td>@item.FirstName </td>
+                    @*<td>@item.MiddleName</td>*@
+                    <td>@item.LastName </td>
+                    @*<td>@item.EmpAddress </td>*@
+                    <td>@item.EmpEmail </td>
+                    <td>@item.EmpMobileNum </td>
+                    <td>@item.EmpCnic </td>
+                    <td>@item.EmpQualification </td>
+                    @*<td>@item.Gender</td>*@
+                    @*<td>@item.EmpMaritalStatus</td>*@
+                    @*<td>@item.EmpDob</td>*@
+                    @*<td>@item.DrivingLicence</td>*@
+                    @*<td>@item.EmpSpecializedDegree </td>*@
+                    @*<td>@item.EmpDegreeYear </td>*@
+                    @*<td>@item.EmpExperience </td>*@
+                    @*<td>@item.RefName </td>
+                         <td>@item.RefMobileNum </td>
+                        <td>@item.RefAddress </td>*@
+                    <td><a href='@Url.Action("Detail", "Employees", new { id = item.EmpId})' : null">View Details</a></td>
+                    <td>
+                        <a href=@item.EmpExperLetterPath download> Experience Letter</a> :
+                        <a href=@item.EmpDegrePath download>  Degree </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-link btn-warning edit btn-sm" style="color:maroon; margin-right:5px;" onclick="ConfirmApprove()? href='@Url.Action("ApproveEmployee", "Employees", new { id = item.EmpId })' : null"><i class="fa fa-check"></i></a>
+
+                        <a class="btn btn-link btn-danger remove btn-sm btnremove d-none" style="color:maroon" href='@Url.Action("RejectedEmployee", "Employees", new { id = item.EmpId})' : null"><i class="fa fa-times"></i></a>
+                    <a class="btn btn-link btn-danger remove btndelete" style="color:maroon"><i class="fa fa-times"></i></a>
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#User').DataTable({
+                "Processing": true,
+                "ServerSide": false,
+                "Filter": true
+            })
+        });
+        setTimeout(function () {
+            $("#msgalert").hide();
+        }, 3500);
+    </script>
+}
+
+<script>
+    $(".btndelete").click(function (e) {
+        e.preventDefault();
+        swal("Are you sure to delete?", {
+            buttons: {
+                yes: {
+                    text: "Yes",
+                    value: "yes"
+                },
+                no: {
+                    text: "No",
+                    value: "no"
+                }
+            }
+        }).then((value) => {
+            if (value == "yes") {
+                debugger;
+                $(this).parent().find(".btnremove").get(0).click();
+            }
+            return false;
+        });
+    });
+</script>

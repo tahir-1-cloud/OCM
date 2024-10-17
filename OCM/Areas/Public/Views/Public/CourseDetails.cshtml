@@ -1,0 +1,142 @@
+﻿@model OCMDomain.Repository.Edmx.OnlineCourseTble
+@{
+    ViewData["Title"] = "CourseDetails";
+    Layout = "~/Areas/Public/Views/Shared/_PublicLayout.cshtml";
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Hello, world!</title>
+</head>
+<body>
+    <div class="container-fluid" style="margin-top: 25px;">
+        @Html.HiddenFor(model => model.OnlineCourseId)
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@Url.Content(Model.LogoByPath)" style="width:350px; height:450px">
+            </div>
+            <div class="col-md-8">
+                <h2> Description </h2>
+                <p> Course Name: <span style="font-weight: bolder;"> @Model.Name </span></p>
+                <p> Course Code: <span style="font-weight: bolder;"> @Model.Code </span></p>
+                @*<p> Course Assigned to: <span style="font-weight: bolder;"> Sir Usman </span></p>*@
+                <p> Description: <span style="font-weight: bolder;"> @Model.Description </span></p>
+                @*<a href="~/public/Security/RegisterStudent/@Model.TimeTble"><button type="submit" class="btn btn-danger" style="width:150px"> TimeTable</button> </a>*@
+                <div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card" style="width: 18rem;float:right; margin-right:20px">
+                            <div class="card-body" style="text-align: center;">
+                                <h3 class="card-title" style="text-align: center; color: #2E2751; font-weight: bold;">Fee Details</h3>
+                                <hr />
+                                <h4 class="card-subtitle mb-2 text-muted" style="text-align: center; margin-top:10px;">Total Fee</h4>
+                                @if (Model.CourseFee != null)
+                                {
+                                    <h2 style="text-align: center; color: orange; font-weight: bolder" id="courseFee"> @Model.CourseFee.FeeAmount /-</h2>
+
+                                    <p style="text-align: center;"> Installment Available?</p>
+                                    @if (Model.CourseFee.IsInstallementAllow == true)
+                                    {
+                                        <a style="font:bold">Yes</a>
+                                    }
+                                    else
+                                    {
+                                        <a style="font:bold">NO</a>
+                                    }
+                                }
+                            <p class="card-text" style="text-align: center;">Here is the complete detail of fees of this course.</p>
+                                <a href="~/public/Security/RegisterStudent/@Model.OnlineCourseId"><button type="submit" class="btn btn-success" style="width:150px"> Enroll</button> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center" style="font-weight:600">Batch Details</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Ser No.</th>
+                            <th scope="col">Batch Name</th>
+                            <th scope="col">Total Seats</th>
+                            <th scope="col">Remaining Seats</th>
+                            <th scope="col">Credit Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @if (@Model.CourseQuota != null)
+                            {
+                                <th scope="row">1</th>
+                                <td>@Model.CourseQuota.BatchName</td>
+                                <td>@Model.CourseQuota.NoofStudents</td>
+                                <td>@Model.CourseQuota.RemainingSeats</td>
+                                <td>@Model.CourseFee.PerCreditHour</td>
+                            }
+                            else
+                            {
+                                <td>No Quota Defined</td>
+                            }
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 card">
+                <h2 class="text-center" style="font-weight:600">Time Table</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Course StartDate</th>
+                            <th scope="col">Course EndDate</th>
+                            <th scope="col">BreakTime</th>
+                            <th scope="col">Days</th>
+                            <th scope="col">StartTime</th>
+                            <th scope="col">EndTime</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 1;}
+                        @foreach (var item in Model.listCourseSchedule)
+                        {
+                            <tr>
+                                <td scope="row">@i</td>
+                                <td>@item.StartDate</td>
+                                <td>@item.EndDate</td>
+                                <td>@item.BreakTime</td>
+                                <td>@item.CourseTimeLine.Day</td>
+                                <td>@item.CourseTimeLine.StartingTime</td>
+                                <td>@item.CourseTimeLine.EndingTime.</td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
+<script>
+    var courseFeeElement = document.getElementById("courseFee");
+    var feeAmount = parseFloat(courseFeeElement.textContent);
+    var feeAmountInDollars = feeAmount / 100; 
+    // Update the text content of the element with the amount in dollars
+    courseFeeElement.textContent = "$" + feeAmountInDollars.toFixed(2);
+</script>

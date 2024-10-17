@@ -1,0 +1,22 @@
+﻿Scaffold-DbContext "Server=DESKTOP-DF3JMOD\SQLEXPRESS;Database=OCM;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Repository/Edmx
+        Scaffold-DbContext "Server=DESKTOP-DF3JMOD\SQLEXPRESS;Database=OCM;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Repository/Edmx -Force
+
+
+    
+
+    
+    IdentityDbContext<Users,IdentityRole, string>
+
+        public virtual DbSet<AspNetRole> AspNetRole { get; set; }
+        public virtual DbSet<AspNetRoleClaim> AspNetRoleClaim { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUser { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaim { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogin { get; set; }
+        public virtual DbSet<AspNetUserRole> AspNetUserRole { get; set; }
+
+   
+
+              base.OnModelCreating(modelBuilder);
+            modelBuilder.Ignore<IdentityUserLogin<string>>();
+            modelBuilder.Ignore<IdentityUserToken<string>>();
+            modelBuilder.Ignore<IdentityUser<string>>();

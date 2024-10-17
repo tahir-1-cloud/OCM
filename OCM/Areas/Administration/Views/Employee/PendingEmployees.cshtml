@@ -1,0 +1,101 @@
+﻿@model OCMDomain.Repository.Edmx.EmployeValidation
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Pending Employee List</h3>
+<br />
+<br />
+<link href="~/css/toggle.css" rel="stylesheet" />
+
+<div style="overflow-x:auto;">
+    <table id="User" class="display">
+        <thead>
+            <tr>
+                <th>SER NO</th>
+                <th>First Name</th>
+               
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Cnic</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Mobile</th>
+     
+     
+                <th>Qualification</th>
+                <th>Specialized Degree</th>
+                <th>Degree Year</th>
+                <th>Experience</th>
+      
+                <th>Mobile</th>
+                <th>Address</th>
+                <th>Download</th>
+                <th>Approve/Reject</th>
+            </tr>
+
+            @{int i = 1;}
+        </thead>
+        @foreach (var item in Model.EmployList)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@item.FirstName </td>
+        
+                <td>@item.LastName </td>
+                <td>@item.EmpAddress </td>
+                <td>@item.EmpCnic </td>
+                <td>@item.EmpEmail </td>
+                <td>@item.Gender</td>
+                <td>@item.EmpMobileNum </td>
+        
+                <td>@item.EmpQualification </td>
+                <td>@item.EmpSpecializedDegree </td>
+                <td>@item.EmpDegreeYear </td>
+                <td>@item.EmpExperience </td>
+
+                <td>@item.RefMobileNum </td>
+                <td>@item.RefAddress </td>
+                <td>
+                    <a href=@item.EmpExperLetterPath download> Experience Letter</a> :
+                    <a href=@item.EmpDegrePath download>  Degree </a>
+                </td>
+                <td>
+                    <a class="btn btn-link btn-warning edit" style="color:maroon" href='@Url.Action("UpdateEmploye", "Employee", new { id = item.EmpId })' : null"><i class="fa fa-check"></i></a>             
+                    <a class="btn btn-link btn-danger remove" style="color:maroon" href='@Url.Action("DeleteEmploye", "Employee", new { id = item.EmpId})' : null"><i class="fa fa-times"></i></a>
+                </td>
+            </tr>
+            i++;
+        }
+
+    </table>
+</div>
+
+
+
+
+<link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!--Bootstrapp Toggle-->
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $('#User').DataTable({
+
+                "Processing": true,
+                "ServerSide": false,
+                "Filter": true
+            })
+        });
+
+    </script>
+}
+

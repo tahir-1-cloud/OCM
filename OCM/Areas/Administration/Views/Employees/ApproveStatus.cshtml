@@ -1,0 +1,103 @@
+﻿@model IEnumerable<OCMDomain.Repository.Edmx.EmployTble>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="~/public/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="~/js/toastr.js"></script>
+
+@if (TempData["response"] != null)
+{
+    <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+
+        } else {
+            toastr.success('@TempData["response"].ToString()')
+        }
+    });
+    </script>
+}
+<h4>Approved Employee</h4>
+<br />
+<br />
+<div style="overflow-x:auto;">
+    <table id="User" class="table table-striped table-no-bordered table-hover table-responsive" cellspacing="0" width="100%" style="width:100%">
+        <thead>
+            <tr>
+                <th>SER NO</th>
+                <th>Employee Type</th>
+                <th>First Name</th>
+                @*<th>Middle Name</th>*@
+                <th>Last Name</th>
+                @*<th>Address</th>*@
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Cnic</th>
+                <th>Gender</th>
+                @*<th>Marital Status</th>*@
+                @*<th>DOB</th>*@
+                @*<th>Driving Lisence</th>*@
+                <th>Qualification</th>
+                @*<th>Specialized Degree</th>*@
+                @*<th>Degree Year</th>*@
+                @*<th>Experience</th>*@
+                @*<th>Ref Name</th>
+           <th>Mobile</th>
+            <th>Address</th>*@
+                <th>Download</th>
+                @*<th>Action</th>*@
+            </tr>
+            @{int i = 1;}
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@i</td>
+                <td>@item.EmpType</td>
+                <td>@item.FirstName </td>
+                @*<td>@item.MiddleName</td>*@
+                <td>@item.LastName </td>
+                @*<td>@item.EmpAddress </td>*@
+                <td>@item.EmpEmail </td>
+                <td>@item.EmpMobileNum </td>
+                <td>@item.EmpCnic </td>
+                <td>@item.Gender</td>
+                @*<td>@item.EmpMaritalStatus</td>*@
+                @*<td>@item.EmpDob</td>*@
+                @*<td>@item.DrivingLicence</td>*@
+                <td>@item.EmpQualification </td>
+                @*<td>@item.EmpSpecializedDegree </td>*@
+                @*<td>@item.EmpDegreeYear </td>*@
+                @*<td>@item.EmpExperience </td>*@
+                @*<td>@item.RefName </td>
+         <td>@item.RefMobileNum </td>
+        <td>@item.RefAddress </td>*@
+                <td>
+                    <a href=@item.EmpExperLetterPath download> Experience Letter</a> :
+                    <a href=@item.EmpDegrePath download>  Degree </a>
+                </td>
+            </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#User').DataTable({
+                "Processing": true,
+                "ServerSide": false,
+                "Filter": true
+            })
+        });
+    </script>
+}

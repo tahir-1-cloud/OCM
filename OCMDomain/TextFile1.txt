@@ -1,0 +1,2 @@
+﻿Scaffold-DbContext "Server=.;Database=OCM;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Repository/Edmx
+        Scaffold-DbContext "Server=.;Database=OCM;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Repository/Edmx -Force

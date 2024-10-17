@@ -1,0 +1,177 @@
+@model OCMDomain.Entities.ModelClass;
+@{
+    ViewData["Title"] = "PendingStudent";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+
+
+}
+
+<div class="table-content" style="padding:20px">
+    <h3 style="margin-top:20px;"><b>Course Name : </b>  @Model.OCT.CourseQuota.CourseName </h3>
+
+    <div class="col-md-12">
+        <a href="@Url.Action("CheckStudentCourseOutline", "Student",new { @id=Model.OCT.OnlineCourseId})">
+            <button class="btn btn-success" id="myBtn" style="margin-top:20px;">  Check Course Outline </button>
+        </a>
+    </div>
+    <br />
+    <br />
+    <table id="User" class="display">
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>File Name</th>
+                <th>Uploaded Date</th>
+                <th>View</th>
+
+            </tr>
+
+        </thead>
+        <tbody>
+            @{int i = 1;}
+
+
+            @foreach (var courses in Model.ListcourseMaterials)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@courses.Filename</td>
+                    <td>@courses.UploadDate</td>
+                    <td>
+                        @if (@courses.VideoPath != null)
+                        {
+                            @*<a href="@courses.VideoPath" onlick="video(@courses.VideoPath)" class="fa fa-eye"> Video </a>*@
+                            var VideoHref = "#Video" + @i;
+                            var VideoModal = "Video" + @i;
+
+                            <a data-toggle="modal" href="@VideoHref" class="fa fa-eye"> Video </a>
+                            <!-- Modal Popup Start-->
+                            <div class="modal fade" id="@VideoModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 900px !important; ">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <button type="button" class="btn btn-outline-danger img-circle ml-auto" data-dismiss="modal">X</button>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card card-body">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-12">
+                                                        <video style="width:100%; height: 350px;" id="video-id" controls controlsList="nodownload">
+                                                            <source src="@courses.VideoPath" type="video/mp4">
+                                                        </video>
+                                                        <h3 class="col-3">@courses.VideoTitle</h3>
+                                                        <hr />
+                                                        <label class="col-7" style="font-weight:400">@courses.VideoDescription</label>
+                                                    </div>
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Popup End-->
+                        }
+                        @if (@courses.ImagePath != null)
+                        {
+                            var ImageHref = "#Image" + @i;
+                            var ImageModal = "Image" + @i;
+
+                            <a data-toggle="modal" href="@ImageHref" class="fa fa-eye"> Image </a>
+                            <!-- Modal Popup Start-->
+                            <div class="modal fade" id="@ImageModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 900px !important; ">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <button type="button" class="btn btn-outline-danger img-circle ml-auto" data-dismiss="modal">X</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card card-body">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-12">
+                                                        <img id="cartoonimage" src="@courses.ImagePath" class="w-100 h-100" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Popup End-->
+                        }
+                        @if (@courses.FilePath != null)
+                        {
+                            var FileHref = "#file" + @i;
+                            var FleModal = "file" + @i;
+                            <a data-toggle="modal" href="@FileHref" class="fa fa-eye"> File </a>
+                            <!-- Modal Popup Start-->
+                            <div class="modal fade" id="@FleModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 900px !important; ">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <button type="button" class="btn btn-outline-danger img-circle ml-auto modelclose" data-dismiss="modal">X</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card card-body">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-12">
+                                                        <iframe id="cartoonpdf" src="@courses.FilePath" #toolbar="0" style="object-fit:cover;width:100%; height: 350px;"></iframe>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Popup End-->
+                        }
+
+                    </td>
+
+
+
+                    @*<td><input class="toggle" type="checkbox"></td>*@
+                </tr>
+                i++;
+
+
+            }
+
+
+
+
+        </tbody>
+
+
+
+    </table>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.modelclose').click(function () {
+                var media = $("#video-id").get(0);
+                media.pause();
+                media.currentTime = 0;
+            });
+            $('#cartoonimage').on('contextmenu', function (e) {
+                e.preventDefault();
+            });
+            $('#cartoonpdf').on('contextmenu', function (e) {
+                e.preventDefault();
+            });
+            $('#User').DataTable({
+                "Processing": true,
+                "ServerSide": false,
+                "Filter": true
+            })
+        });
+    </script>
+}

@@ -1,0 +1,457 @@
+@model OCMDomain.Repository.Edmx.OnlineCourseTble
+@{
+    ViewData["Title"] = "CourseDescription";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Hello, world!</title>
+    <style>
+        .form-row {
+            margin-top: 20px;
+        }
+
+        .panel-primary > .panel-heading {
+            color: #fff;
+            background-color: #337AB7;
+            border-color: #337AB7;
+            margin-bottom: 20px;
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+    </style>
+
+    <script>
+        function ConfirmReject() {
+            return confirm('Are you sure you want to reject?');
+        }
+        function ConfirmApprove() {
+            return confirm('Are you sure you want to approve?');
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="container-fluid" style="margin-top: 25px;">
+
+        <input type="hidden" name="@Model.OnlineCourseId" class="idcourse" value="@Model.OnlineCourseId" />
+        <input type="hidden" name="@Model.CourseQuota.BatchId" class="BatchId" value="@Model.CourseQuota.BatchId" />
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@Url.Content(Model.LogoByPath)" style="width:350px; height:450px">
+            </div>
+
+            <div class="col-md-8">
+                <h2> Course Details  </h2>
+
+                <p> Course Name: <span style="font-weight: bolder;"> @Model.Name </span></p>
+                <p> Course Code: <span style="font-weight: bolder;">@Model.Code </span></p>
+                @if (Model.AssignTeacher != null)
+                {
+                    <div class="row">
+                        <p class="col-5"> Assigned Teacher: <span style="font-weight: bolder;">@Model.AssignTeacher.TeacherName </span></p>
+                    </div>
+                }
+                else
+                {
+                    <p> Assigned Teacher: <span style="font-weight: bolder;"></span></p>
+                }
+
+                @*<p> Course Assigned to: <span style="font-weight: bolder;"> Sir Usman </span></p>*@
+                <p>@Model.Description</p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" style="width: 18rem;float:right;">
+                            <div class="card-body" style="text-align: center;">
+                                <h3 class="card-title" style="text-align: center; color: #2E2751; font-weight: bold; font-size:30px ; float:none;">Fee Details</h3>
+                                <hr />
+                                <h4 class="card-subtitle mb-2 text-muted" style="text-align: center; margin-top:10px;">Total Fee</h4>
+                                @if (Model.CourseFee != null)
+                                {
+
+                                    <h2 style="text-align: center; color: orange; font-weight: bolder"> @Model.CourseFee.FeeAmount /-</h2>
+                                    @*<p style="text-align: center;"> Fee Per Credit: <span style="font-weight: bolder;">@Model.CourseFee.PerCreditHour </span></p>*@
+                                }
+                                <p>
+                                    Installment Available?
+                                </p>
+                                @if (Model.CourseFee.IsInstallementAllow == true)
+                                {
+                                    <span style="font-weight:bold">
+                                        Yes!!
+                                    </span>
+                                }
+
+                                else
+                                {
+                                    <span style="font-weight:bold">
+                                        No!!
+                                    </span>
+                                }
+                                <br /><br />
+                                <p class="card-text" style="text-align: center;">Here is the complete detail of fees of this course.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Batch Table</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Batch Name</th>
+                            <th scope="col">Total Seats</th>
+                            <th scope="col">Remaining Seats</th>
+                            <th scope="col">Add Time Table</th>
+                            <th scope="col">Teacher</th>
+                            <th scope="col">TimeTable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @if (@Model.CourseQuota != null)
+                            {
+
+                                <th scope="row">1</th>
+                                <td>@Model.CourseQuota.BatchName</td>
+                                <td>@Model.CourseQuota.NoofStudents</td>
+                                <td>@Model.CourseQuota.RemainingSeats</td>
+                                <td>
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter1">
+                                        Time Table
+                                    </button>
+                                </td>
+                                <td>
+                                    @if (Model.AssignTeacher == null)
+                                    {
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter" onclick="modalshow(@Model.CourseQuota.CourseId)">
+                                            Assign Teacher
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <a class=" btn btn-danger text-decoration-none" style="color:white;" onclick="deleteteacher(@Model.AssignTeacher.AssignId)">Remove Teacher </a>
+                                    }
+                                </td>
+                                <td>
+                                <a class="btn btn-link btn-success" style="color:white; width:max-content;" href='@Url.Action("CourseTimeTable", "Courses", new { id =Model.OnlineCourseId })' : null">Check TT</a>
+                                </td>
+
+
+                            }
+                            else
+                            {
+                                <th>No Quota Defined</th>
+                            }
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                <!-- The Modal -->
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                @*<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>*@
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                @*<input type="hidden" id="txtcourseid" />*@
+                                <h3>Select a Teacher to Assign this Course</h3>
+                                <br />
+                                <label for="departmentsDropdown"><b>Employee</b></label>
+                                <select class="form-control" id="employe" name="Employe"></select>
+                                <button type="submit" class="btn btn-success" style=" margin-top: 30px; width: fit-content; }" id="AssignBtn"> Assign </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                @using (Html.BeginForm(Html.BeginForm("TimeTable", "Courses", FormMethod.Post, new { id = "modalForm" })))
+                {
+                    @Html.HiddenFor(m => m.OnlineCourseId)
+                    @Html.HiddenFor(m => m.CourseSchedule.TimeTableId)
+
+                    <!-- The Modal -->
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    @*<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>*@
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+
+                                            @Html.HiddenFor(m => m.CourseSchedule.TimeTableId)
+
+
+                                            <label>Day</label>
+                                            @Html.TextBoxFor(x => x.CourseTimeLine.Day, new { @class = "form-control", @id = "daytxt", @placeholder = "Day" })
+                                            @Html.ValidationMessageFor(x => x.CourseTimeLine.Day, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Starting Time</label>
+                                            @Html.TextBoxFor(x => x.CourseTimeLine.StartingTime, new { @class = "form-control", @placeholder = "StartingTime", @type = "time" })
+                                            @Html.ValidationMessageFor(x => x.CourseTimeLine.StartingTime, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Ending Time</label>
+                                            @Html.TextBoxFor(x => x.CourseTimeLine.EndingTime, new { @class = "form-control", @placeholder = "EndingTime", @type = "time" })
+                                            @Html.ValidationMessageFor(x => x.CourseTimeLine.EndingTime, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Break Time</label>
+                                            @Html.TextBoxFor(x => x.CourseSchedule.BreakTime, new { @class = "form-control", @placeholder = "BreakTime" })
+                                            @Html.ValidationMessageFor(x => x.CourseSchedule.BreakTime, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    @*<div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label>StartDate</label>
+                                                @Html.TextBoxFor(x => x.CourseSchedule.StartDate, new { @class = "form-control", @placeholder = "StartDay", @type = "date" })
+                                                @Html.ValidationMessageFor(x => x.CourseSchedule.StartDate, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>EndDate</label>
+                                                @Html.TextBoxFor(x => x.CourseSchedule.EndDate, new { @class = "form-control", @placeholder = "EndDate", @type = "date" })
+                                                @Html.ValidationMessageFor(x => x.CourseSchedule.EndDate, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Break Time</label>
+                                                @Html.TextBoxFor(x => x.CourseSchedule.BreakTime, new { @class = "form-control", @placeholder = "BreakTime" })
+                                                @Html.ValidationMessageFor(x => x.CourseSchedule.BreakTime, "", new { @class = "text-danger" })
+                                            </div>
+
+                                        </div>*@
+                                    <div class="col-md-12 text-right">
+
+                                        <div class="form-button" style="padding-left: 25px; float:right;">
+                                            <button type="submit" class="btn btn-success close-btn">Save</button>
+                                        </div>
+                                        @*<button type="button" class="btn btn-success AddButn1" style=" margin-top: 30px; width: fit-content; }" data-toggle="modal" data-target="#AddDay" onclick="">
+                                                Add day
+                                            </button>*@
+                                    </div>
+
+
+                                    @*<button type="submit" class="btn btn-success" style=" margin-top: 30px; width: fit-content; }" id="AssignBtn"> Assign </button>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- The Modal -->
+                    <!-- Modal -->
+                    <div class="modal fade" id="AddDay" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    @*<h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>*@
+                                    <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    @*<div class="row">
+                                            <div class="form-group col-md-6">
+
+                                                @Html.HiddenFor(m => m.CourseSchedule.TimeTableId)
+
+
+                                                <label>Day</label>
+                                                @Html.TextBoxFor(x => x.CourseTimeLine.Day, new { @class = "form-control", @id = "daytxt", @placeholder = "Day" })
+                                                @Html.ValidationMessageFor(x => x.CourseTimeLine.Day, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Starting Time</label>
+                                                @Html.TextBoxFor(x => x.CourseTimeLine.StartingTime, new { @class = "form-control", @placeholder = "StartingTime", @type = "time" })
+                                                @Html.ValidationMessageFor(x => x.CourseTimeLine.StartingTime, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Ending Time</label>
+                                                @Html.TextBoxFor(x => x.CourseTimeLine.EndingTime, new { @class = "form-control", @placeholder = "EndingTime", @type = "time" })
+                                                @Html.ValidationMessageFor(x => x.CourseTimeLine.EndingTime, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>*@
+
+                                    <div class="col-md-12 text-right">
+                                        @*<div class="form-button" style="padding-left: 25px; float:right;">
+                                                <button type="submit" class="btn btn-success close-btn">Save</button>
+                                            </div>*@
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+        <br />
+        <br />
+
+        <br />
+
+        <br />
+
+
+
+    </div>
+    <!-- Optional JavaScript -->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    @section scripts{
+        <script>
+  $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Administration/Courses/GetEmploye",
+                    data: "{}",
+                    success: function (data) {
+                        var s = '<option value="-1">Select Employee</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            s += '<option value="' + data[i].empId + '">' + data[i].firstName + data[i].lastName + '</option>';
+                        }
+                        $("#employe").html(s);
+                    }
+                });
+                $('#User').DataTable({
+                    "Processing": true,
+                    "ServerSide": false,
+                    "Filter": true
+                });
+                $("#AssignBtn").click(function () {
+                    $("#myModal").hide();
+                });
+  });
+
+            var deleteteacher = function (teacherid) {
+
+                    var id = teacherid;
+                        Swal.fire({
+                            title: 'Are you sure want to delete assigned teacher?',
+                            text: "You won't be able to revert this!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085D6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                               window.location.href = "@Url.Action("DeleteTeacher", "Courses")/" + id;
+                            }
+                            else {
+                                return false;
+                            }
+                        })
+                    }
+
+            $(".AddButn1").click(function () {
+                $("#exampleModalCenter1").modal('hide');
+                $("#AddDay").modal('toggle');
+
+
+
+
+            });
+            $(".close-btn").click(function () {
+
+                $(".reset").bind("click", function () {
+                    $("input[type=text]").val("");
+                });
+                location.reload();
+
+
+
+            });
+
+
+             $("#AssignBtn").click(function () {
+             var empId = $("#employe").val();
+             var courseId = $(".idcourse").val();
+             var batchId = $(".BatchId").val();
+             var firstName = $("#employe :selected").text();
+            var model = {
+            empId: $("#employe").val(),
+            firstName: firstName,
+            };
+            $.ajax({
+            type: "POST",
+            url: "@Url.Action("AssignedTeacher", "Courses")",
+            data: {
+            employ: model,
+            CourseId: courseId,
+            BatchId: batchId
+            },
+            cache: false,
+            success: function (r) {
+            if (r == "true") {
+            window.location.replace("/Administration/Courses/Detail/" + empId)
+            }
+            else if (r == "already assign") {
+            alert("Teacher already assigned");
+            }
+            alert("AssignId: " + r.AssignId.toString() + r.firstName.toString() + r.lastName.toString());
+            alert("Assigned Successfully!!  .");
+            }
+            })
+            });
+            function modalshow() {
+                debugger
+                $("#exampleModalCenter").modal('show');
+                $(".idcourse").val();
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                // Hide displayed paragraphs
+
+
+            });
+        </script>
+    }
+</body>
+</html>

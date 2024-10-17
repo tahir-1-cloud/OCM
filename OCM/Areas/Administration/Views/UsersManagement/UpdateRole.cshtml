@@ -1,0 +1,75 @@
+﻿@model OCMDomain.Repository.Edmx.AspNetRole
+@{
+    ViewData["Title"] = "UpdateRole";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml";
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .container {
+            margin-top: 40px;
+            background-color: white;
+        }
+
+        h1 {
+            padding: 20px;
+        }
+
+        .form-row {
+            margin: 20px;
+        }
+
+        button {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card stacked-form">
+        <div class="card-header">
+            <h5 class="card-title">Update Role</h5>
+            @if (TempData["response"] != null)
+            {
+                <div class="alert alert-danger" id="msgalert">
+                    @TempData["response"].ToString()
+                </div>
+            }
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("UpdateRole", "Home", FormMethod.Post))
+            {
+                {
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="row">
+                        <div class="form-group col-md-5">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Role Name", } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger db" })
+                        </div>
+                    </div>
+                    <div class="col-md-12 mr-auto ml-auto">
+                        <button type="submit" class="btn btn-fill btn-info btn-wd fr">Submit</button>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+</body>
+</html>

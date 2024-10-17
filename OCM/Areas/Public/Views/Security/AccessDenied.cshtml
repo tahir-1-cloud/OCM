@@ -1,0 +1,23 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/css/Error.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/js/toastr.js"></script>
+</head>
+<body>
+    <div class="lock"></div>
+    <div class="row">
+        <p>You Dont Have Access To This Page.Go Back To Continue Browsing</p>
+    </div>
+    <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Go Back</a>
+
+</body>
+</html>

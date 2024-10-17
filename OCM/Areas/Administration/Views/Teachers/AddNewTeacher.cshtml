@@ -1,0 +1,171 @@
+﻿@model OCMDomain.Repository.Edmx.Users
+
+@{ ViewData["Title"] = "RegisterNewUser";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml"; }
+
+
+@*@if (TempData["AlertMessage"] != null)
+    {
+    <div class="alert-danger" id="msgalert">
+        <strong>success!</strong>@TempData["AlertMessage"]
+    </div>}*@
+
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <!-- Js Stylesheet -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="~/public/js/jquery.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/js/toastr.js"></script>
+
+
+    <title>User Registration</title>
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .container {
+            margin-top: 40px;
+            background-color: white;
+        }
+        .card {
+            background-color:lightgray;
+        }
+
+        h1 {
+            padding: 20px;
+        }
+
+        .form-row {
+            margin: 20px;
+        }
+
+        button {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    @if (TempData["response"] != null)
+    {
+        <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+
+        } else {
+            toastr.info('@TempData["response"].ToString()')
+        }
+    });
+        </script>
+    }
+
+    <div class="container">
+        <h1> @ViewBag.PageName</h1>
+        <h3 style="margin-left:24px;">Register Teacher</h3>
+        <br />
+        @using (Html.BeginForm("AddNewTeacher", "Teachers", FormMethod.Post))
+        {
+
+            <div>@ViewData["error"]</div>
+
+            @Html.AntiForgeryToken() // @Html.ValidationSummary()
+            <div class="form-row">
+                <div class="form-group col-md-6">
+
+                    <label style=" font-weight:normal">First Name</label>
+                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", @placeholder = "First Name", id = "firstname" })
+                    @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label style=" font-weight:normal">Last Name</label>
+                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", @placeholder = "Last Name", id = "lastname" })
+                    @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label style=" font-weight:normal">Email</label>
+                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Email", id = "email" })
+                    @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-6">
+                    <label style=" font-weight:normal">Mobile</label>
+                    @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", @placeholder = "Mobile Number", id = "mobile" })
+                    @Html.ValidationMessageFor(x => x.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label style=" font-weight:normal">Address</label>
+                    @Html.TextBoxFor(x => x.Address, new { @class = "form-control", @placeholder = "Address", id = "address" })
+                    @Html.ValidationMessageFor(x => x.Address, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group col-md-6">
+                    <label style=" font-weight:normal">CNIC</label>
+                    @Html.TextBoxFor(x => x.Cnic, new { @class = "form-control", @placeholder = "CNIC", id = "cnicI" })
+                    @Html.ValidationMessageFor(x => x.Cnic, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label style=" font-weight:normal">Password</label>
+                    @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @placeholder = "Password", @type = "password", id = "password" })
+                    @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label style=" font-weight:normal">Confirm Password</label>
+                    @Html.TextBoxFor(x => x.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", @type = "password", id = "conpassword" })
+                    @Html.ValidationMessageFor(x => x.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="form-button" style="padding-left: 25px; float: right;">
+                <button type="submit" class="btn btn-success" id="registerid">Save</button>
+
+            </div>}
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    <script>
+                //function ShowMessage() {
+                //    var result = confirm("Do you want to submit form?");
+                //    if (result) {
+                //        return true;
+                //    }
+                //    else {
+                //        return false;
+                //    }
+                //}
+
+    </script>
+</body>
+</html>

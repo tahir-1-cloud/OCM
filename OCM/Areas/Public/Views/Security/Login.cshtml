@@ -1,0 +1,172 @@
+﻿@model OCMDomain.Repository.Edmx.Users
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Public/Views/Shared/_PublicLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Login";
+}
+<!-- OCM Plugins CSS -->
+<link href="~/public/css/animate.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/public/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/public/css/cubeportfolio.min.css">
+<link rel="stylesheet" href="~/public/css/font-awesome.css">
+<link rel="stylesheet" href="~/public/css/jquery.fancybox.min.css">
+<link rel="stylesheet" href="~/public/css/magnific-popup.min.css">
+<link rel="stylesheet" href="~/public/css/owl-carousel.min.css">
+<link rel="stylesheet" href="~/public/css/slicknav.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+
+<!-- OCM Stylesheet -->
+<link rel="stylesheet" href="~/public/css/reset.css">
+<link rel="stylesheet" href="~/public/css/style.css">
+<link rel="stylesheet" href="~/public/css/responsive.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+<!-- Jquery JS -->
+<script src="~/public/js/jquery.min.js"></script>
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="~/js/toastr.js"></script>
+<script src="~/js/EyeButton.js"></script>
+@if (TempData["response"] != null)
+{
+    <script>
+    $(document).ready(function () {
+        var success = '@((TempData["response"] != null).ToString())';
+        if (success == 'false' || success == false) {
+
+        } else {
+            toastr.info('@TempData["response"].ToString()')
+        }
+    });
+    </script>
+}
+
+
+<div class="breadcrumbs overlay" style="background-image: url('/public/img/breadcrumb.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <!-- Bread Menu -->
+                    <div class="bread-menu">
+                        <ul>
+                            <li><a href="~/Public/Public/index">Home</a></li>
+                            <li><a href="#">Login</a></li>
+                        </ul>
+                    </div>
+                    <!-- Bread Title -->
+                    <div class="bread-title">
+                        <h2>Welcome to login</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ End Breadcrumb -->
+<!-- Contact Us -->
+
+<section class="contact-us section-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-12">
+                <!-- Contact Form -->
+                <div class="contact-form-area m-top-30">
+                    <h4><center>Login</center></h4>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="aspNetHidden">
+                            <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/X5zLQBVqYhHpJ2BxQGkim58xh2nQ4TphahCTqujs0keVPKudL7VHVqQGx/arLZCo+4tz30ZNvfeVNh94bw1UvGeJzFCnLwnOQdwEYnLEVI=" />
+                        </div>
+
+                        <div class="aspNetHidden">
+
+                            <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="C2EE9ABB" />
+                            <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="MZSsWxYPqfQcszJQb1HhnhncrDHkTXijaJanfy+2Zkgl4QO+55foh7XC/BLFlk7R/N6GogonYmwGqO9PYbBVyCB/1bilEF8Fsw9R222Cx5+ZaGMCKG1raPulWh64I9xmZP/v9C2HMQrViZD7JUJN24Kwzkd4DGTG+DvP94+P9Zg=" />
+                        </div>
+                        <div class="row">
+                            <span id="Labelerror" style="color:Red;"></span>
+                            <div class="col-lg-12 col-md-12 col-12">
+                                <div class="form-group">
+                                    <div class="icon" style="top:37px;"><i class="fa fa-user" style="top:37px;"></i></div>
+                                    <label>Email</label>
+                                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Email" })
+                                    @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })
+                                    @*<input name="TextBoxusername" type="text" id="TextBoxusername" required="required" placeholder="Username" />*@
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-12">
+                                <div class="form-group">
+                                    <div class="icon" style="top:37px;">
+                                        <i class="bi bi-eye-slash" id="togglePassword" style="cursor:pointer;" onclick="myFunction();"></i>
+                                    </div>
+                                    <label>Password</label>
+                                    @Html.PasswordFor(x => x.PasswordHash, new { @class = "form-control", @placeholder = "Password", @id="myInput" })
+                                    @Html.ValidationMessageFor(x => x.PasswordHash, "", new { @class = "text-danger" })
+                                    <!--  <input name="TextBoxpassword" type="password" id="TextBoxpassword" required="required" placeholder="Password" />-->
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <br />
+                                <a href="~/public/Security/ForgotPassword">Forgot Password?</a>
+                            </div>
+                            <!-- <div class="col-12">
+                                 <br />
+                                 <a href="~/Public/Security/ChangePassword">Change Password?</a>
+                             </div>-->
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <div class="form-group button">
+                                    <input type="submit" name="Buttonlogin" value="LOGIN" id="Buttonlogin" class="bizwheel-btn theme-2" />
+                                </div>
+                                
+                            </div>
+                            <div class="col-4"></div>
+                        </div>
+                    }
+                </div>
+                <!--/ End contact Form -->
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ End Client Area -->
+<!-- Footer -->
+
+
+
+<script src="~/public/js/jquery-migrate-3.0.0.js"></script>
+<!-- Popper JS -->
+<script src="~/public/js/popper.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="~/public/js/bootstrap.min.js"></script>
+<!-- Modernizr JS -->
+<script src="~/public/js/modernizr.min.js"></script>
+<!-- ScrollUp JS -->
+<script src="~/public/js/scrollup.js"></script>
+<!-- FacnyBox JS -->
+<script src="~/public/js/jquery-fancybox.min.js"></script>
+<!-- Cube Portfolio JS -->
+<script src="~/public/js/cubeportfolio.min.js"></script>
+<!-- Slick Nav JS -->
+<script src="~/public/js/slicknav.min.js"></script>
+<!-- Slick Nav JS -->
+<script src="~/public/js/slicknav.min.js"></script>
+<!-- Slick Slider JS -->
+<script src="~/public/js/owl-carousel.min.js"></script>
+<!-- Easing JS -->
+<script src="~/public/js/easing.js"></script>
+<!-- Magnipic Popup JS -->
+<script src="~/public/js/magnific-popup.min.js"></script>
+<!-- Active JS -->
+<script src="~/public/js/active.js"></script>

@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "ListRole";
+    Layout = "~/Areas/Administration/Views/Shared/_Layout.cshtml"; }
+<script>
+    function ConfirmDelete() {
+        return confirm('Are you sure you want to delete?');
+    }
+    function ConfirmUpdate() {
+        return confirm('Are you sure you want to update record?');
+    }
+</script>
+<a class="btn btn-info btn-wd pull-right" style="width:fit-content" href="@Url.Action("AddRole","Home")">Add Role</a>
+<div class="content">
+    <div class="container-fluid">
+        <div class="section-header">
+            <h3 class="h3center">All Existing Roles</h3>
+            @if (TempData["response"] != null)
+            {
+                <div class="alert alert-success" id="msgalert">
+                    @TempData["response"].ToString()
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card data-tables">
+                    <div class="card-body table-striped table-no-bordered table-hover dataTable dtr-inline table-full-width">
+                        <div class="toolbar">
+                            <!--        Here you can write extra buttons/actions for the toolbar              -->
+                        </div>
+                        <div class="fresh-datatables">
+                            <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>SER NO</th>
+                                        <th>NAME</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                @{int i = 1;}
+                                <tbody>
+                                    @foreach (var role in Model)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@role.Name</td>
+                                            <td>
+                                                <a class="btn btn-link btn-warning edit" style="color:maroon" onclick="ConfirmUpdate()? location.href='@Url.Action("UpdateRole", "Home", new { id = role.Id })' : null"><i class="fa fa-edit"></i></a>
+                                                <a class="btn btn-link btn-danger remove" style="color:maroon" onclick="ConfirmDelete()? location.href='@Url.Action("DeleteRole", "Home", new { id = role.Id })': null"><i class="fa fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        $("#msgalert").hide();
+    }, 3500);
+</script>
